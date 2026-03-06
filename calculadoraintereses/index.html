@@ -1,1 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Calculadora de Intereses BCRA</title>
+<style>
+  body { font-family: "Segoe UI", Arial, sans-serif; margin: 30px; background-color: #fafafa; color: #333; }
 
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-size: 14px; /* letra un poco más chica */
+  }
+
+  th, td {
+    padding: 8px 10px;
+    text-align: right;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  th {
+    background-color: #1976d2;
+    color: white;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  tr:nth-child(even) { background-color: #f9f9f9; }
+  tr:hover { background-color: #f1f5ff; }
+
+  .left { text-align: left; }
+  .bold { font-weight: 700; }
+  .right { text-align: right; }
+
+  h2 { color: #1976d2; }
+
+  .btn {
+    margin-top: 10px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #1976d2;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+  }
+  .btn:hover { background-color: #0d47a1; }
+
+  #detalleMora p { margin: 4px 0; line-height: 1.2; font-size: 14px; }
+
+  .form-card {
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    max-width: 400px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px; /* separación entre label e input */
+  }
+
+  .form-group label {
+     flex: 0 0 140px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #1976d2;
+    font-size: 14px;
+  }
+
+  .form-group input {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus {
+    border-color: #1976d2;
+    outline: none;
+    box-shadow: 0 0 3px rgba(25,118,210,0.3);
+  }
+
+  .form-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+#simpleCalcModal {
+position: fixed;
+top: 0; left: 0; right: 0; bottom: 0;
+background: rgba(0,0,0,0.5);
+display: none;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+
+#simpleCalcModal .form-card {
+max-width: 400px;
+width: 100%;
+}
+
+.tooltip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: rgba(25, 118, 210, 0.25); /* mismo azul, más transparente */
+  color: #1976d2;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: help;
+  position: relative;
+}
+
+/* Tooltip a la DERECHA */
+.tooltip::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 50%;
+  left: 125%;
+  transform: translateY(-50%);
+  background: #333;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  width: 280px;
+  line-height: 1.3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 1000;
+}
+
+/* Flechita apuntando al círculo */
+.tooltip::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 115%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent #333 transparent transparent;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.tooltip:hover::after,
+.tooltip:hover::before {
+  opacity: 1;
+}
+
+</style>
+</head>
+<body>
+
+<h2>Calculadora de Intereses - Tasa Pasiva Promedio (BCRA)</h2>
+<form id="calcForm" class="form-card">
+
+<div class="form-group">
+  <label for="capitalInicial">
+    Capital inicial:
+    <span class="tooltip" data-text="Ingrese el monto del capital neto de la liquidación aprobada. Utilice el punto para los decimales.">?</span>
+  </label>
+  <input type="number" id="capitalInicial" step="0.01">
+</div>
+
+<div class="form-group">
+  <label for="interesInicial">
+    Intereses iniciales:
+    <span class="tooltip" data-text="Ingrese el monto del interés neto de la liquidación aprobada. Utilice el punto para los decimales.">?</span>
+  </label>
+  <input type="number" id="interesInicial" step="0.01">
+</div>
+
+<div class="form-group">
+  <label for="fechaCierre">
+    Fecha de cierre:
+    <span class="tooltip" data-text="Indique la fecha de cierre de la liquidación aprobada.">?</span>
+  </label>
+  <input type="date" id="fechaCierre">
+</div>
+
+<div class="form-group">
+  <label for="fechaActual">
+    Fecha actual:
+    <span class="tooltip" data-text="Indique la fecha hasta la cual desea actualizar la liquidación aprobada.">?</span>
+  </label>
+  <input type="date" id="fechaActual">
+</div>
+
+  <div class="form-group">
+    <label for="fechaMora">Fecha de mora:</label>
+    <input type="date" id="fechaMora">
+  </div>
+
+  <div id="pagosContainer"></div>
+
+<div class="form-actions">
+    <button type="button" class="btn" onclick="calcular()">Calcular</button>
+    <button type="button" class="btn" onclick="cerrar()">Limpiar</button>
+    <button type="button" class="btn" onclick="agregarPago()">Agregar pago</button>
+    <button type="button" class="btn" onclick="abrirSimpleCalc()">Cálculo simple</button>
+    <button type="button" class="btn" onclick="imprimirTabla()">Imprimir</button>
+</div>
+
+
+</form>
+
+
+<div id="resultado"></div>
+<div id="detalleMora" style="margin-top:20px; font-family:Arial; font-size:14px;"></div>
+<div id="notaMetodo" style="margin-top:15px; font-size:13px; color:#555;"></div>
+
+<div id="simpleCalcModal">
+<div class="form-card">
+<h3 style="color:#1976d2; margin-top:0;">Cálculo simple</h3>
+<div class="form-group">
+<label for="montoNominal">Monto nominal:</label>
+<input type="number" id="montoNominal" step="0.01">
+</div>
+<div class="form-group">
+<label for="fechaIniSimple">Fecha Inicial:</label>
+<input type="date" id="fechaIniSimple">
+</div>
+<div class="form-group">
+<label for="fechaFinSimple">Fecha Final:</label>
+<input type="date" id="fechaFinSimple">
+</div>
+<div class="form-actions">
+<button type="button" class="btn" onclick="calcularSimple()">Calcular</button>
+<button type="button" class="btn" onclick="cerrarSimpleCalc()">Cancelar</button>
+</div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.2.0/docx.min.js"></script>
+
+<script>
+let pagoCount = 0;
+
+function parseLocalDate(yyyy_mm_dd) {
+    if (!yyyy_mm_dd) return null;
+    const [y, m, d] = yyyy_mm_dd.split("-").map(Number);
+    return new Date(y, m - 1, d);
+}
+
+function fechaValida(fechaStr) {
+    if (!fechaStr) return false;
+
+    const [y, m, d] = fechaStr.split("-").map(Number);
+    const fecha = new Date(y, m - 1, d);
+
+    return (
+        fecha.getFullYear() === y &&
+        fecha.getMonth() === m - 1 &&
+        fecha.getDate() === d
+    );
+}
+
+function hoySinHora() {
+    const h = new Date();
+    h.setHours(0, 0, 0, 0);
+    return h;
+}
+
+
+function ymdLocal(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+}
+function formatDate(date) {
+    return date.toLocaleDateString("es-AR");
+}
+
+async function getIndiceBCRA(fechaYMD) {
+    const url = `https://api.bcra.gob.ar/estadisticas/v4.0/monetarias/43?desde=${fechaYMD}&hasta=${fechaYMD}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Error en la API BCRA");
+
+        const data = await response.json();
+
+        if (
+            data.results &&
+            data.results.length > 0 &&
+            data.results[0].detalle &&
+            data.results[0].detalle.length > 0
+        ) {
+            return parseFloat(data.results[0].detalle[0].valor) || 0;
+        }
+
+    } catch (e) {
+        console.error("Error obteniendo índice:", e);
+    }
+
+    return 0;
+}
+  
+async function findIndexBCRA(date) {
+    const fechaStr = ymdLocal(date);
+    return await getIndiceBCRA(fechaStr);
+}
+
+function coeficiente(indIni, indFin) {
+    return (((indFin + 100) / (indIni + 100)) - 1) * 100;
+}
+function formatCurrency(num) {
+    return num.toLocaleString("es-AR", { style: "currency", currency: "ARS", minimumFractionDigits: 2 });
+}
+
+
+function agregarPago() {
+    pagoCount++;
+    const container = document.getElementById('pagosContainer');
+
+    const div = document.createElement('div');
+    div.id = 'pago' + pagoCount;
+    div.className = 'form-card'; // opcional: caja con sombra para cada pago
+
+    div.innerHTML = `
+      <div class="form-group">
+        <label for="pagoVal${pagoCount}">Pago ${pagoCount}:</label>
+        <input type="number" step="0.01" id="pagoVal${pagoCount}">
+      </div>
+      <div class="form-group">
+        <label for="pagoFecha${pagoCount}">Fecha:</label>
+        <input type="date" id="pagoFecha${pagoCount}">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn" onclick="quitarPago(${pagoCount})">Quitar</button>
+      </div>
+    `;
+    container.appendChild(div);
+}
+
+
+function quitarPago(id) {
+    const div = document.getElementById('pago' + id);
+    if (div) div.remove();
+}
+
+
+async function calcularSimple() {
+const monto = parseFloat(document.getElementById('montoNominal').value) || 0;
+const fechaIni = parseLocalDate(document.getElementById('fechaIniSimple').value);
+const fechaFin = parseLocalDate(document.getElementById('fechaFinSimple').value);
+if (!monto || !fechaIni || !fechaFin) return;
+
+
+let indIni = await findIndexBCRA(new Date(fechaIni.getFullYear(), fechaIni.getMonth(), fechaIni.getDate() - 1));
+let indFin = await findIndexBCRA(fechaFin);
+let coef = coeficiente(indIni, indFin);
+let interes = monto * coef / 100;
+let total = monto + interes;
+
+
+let html = `<h3>Cálculo de intereses</h3>`;
+html += `<p>Monto nominal: ${formatCurrency(monto)}</p>`;
+html += `<p>Fecha Inicial: ${formatDate(fechaIni)} (Índice: ${indIni})</p>`;
+html += `<p>Fecha Final: ${formatDate(fechaFin)} (Índice: ${indFin})</p>`;
+html += `<p>Coeficiente aplicado: ${coef.toFixed(4)}</p>`;
+html += `<p>Intereses: ${formatCurrency(interes)}</p>`;
+html += `<p style="font-weight:bold">Total actualizado: ${formatCurrency(total)}</p>`;
+html += `<div style="margin-top:15px; font-size:13px; color:#555;">`+
+`Método de cálculo: A efectos de calcular la tasa de interés devengada en un determinado período se utiliza la fórmula recomendada por el Comunicado BCRA 14290:<br>`+
+`i = (((100 + Tm) / (100 + T0)) - 1) * 100<br>`+
+`i = tasa de interés expresada en tanto por ciento.<br>`+
+`Tm = valor de la serie de tasas de interés correspondiente al día hasta el cual deben devengarse intereses.<br>`+
+`T0 = valor de la serie de tasas de interés correspondiente al día anterior a partir del cual se devengan los intereses.`+
+`</div>`;
+
+
+document.getElementById('resultado').innerHTML = html;
+cerrarSimpleCalc();
+}
+
+
+function abrirSimpleCalc() {
+document.getElementById('simpleCalcModal').style.display = 'flex';
+}
+function cerrarSimpleCalc() {
+document.getElementById('simpleCalcModal').style.display = 'none';
+}
+
+async function calcular() {
+
+    const fechaActualStr = document.getElementById('fechaActual').value;
+    const fechaCierreStr = document.getElementById('fechaCierre').value;
+    const fechaMoraStr = document.getElementById('fechaMora').value;
+
+    // Validar existencia real de fechas
+    if (!fechaValida(fechaActualStr)) {
+        alert("La Fecha actual ingresada no existe.");
+        return;
+    }
+    if (!fechaValida(fechaCierreStr)) {
+        alert("La Fecha de cierre ingresada no existe.");
+        return;
+    }
+    if (fechaMoraStr && !fechaValida(fechaMoraStr)) {
+        alert("La Fecha de mora ingresada no existe.");
+        return;
+    }
+
+    const fechaActual = parseLocalDate(fechaActualStr);
+    const fechaCierre = parseLocalDate(fechaCierreStr);
+    const fechaMora = fechaMoraStr ? parseLocalDate(fechaMoraStr) : null;
+
+    const hoy = hoySinHora();
+
+    // Fecha actual no puede ser mayor a hoy
+    if (fechaActual > hoy) {
+        alert("La Fecha actual no puede ser posterior al día de hoy.");
+        return;
+    }
+
+    const capitalInicial = parseFloat(document.getElementById('capitalInicial').value) || 0;
+    let interesInicial = parseFloat(document.getElementById('interesInicial').value) || 0;
+
+    const pagos = [];
+    for (let i = 1; i <= pagoCount; i++) {
+        const pagoVal = document.getElementById('pagoVal' + i)?.value;
+        const pagoFechaVal = document.getElementById('pagoFecha' + i)?.value;
+
+        if (pagoVal && pagoFechaVal) {
+
+            if (!fechaValida(pagoFechaVal)) {
+                alert(`La fecha del pago ${i} no existe.`);
+                return;
+            }
+
+            const fechaPago = parseLocalDate(pagoFechaVal);
+
+            if (fechaPago > hoy) {
+                alert(`La fecha del pago ${i} no puede ser posterior al día de hoy.`);
+                return;
+            }
+
+            pagos.push({
+                valor: parseFloat(pagoVal),
+                fecha: fechaPago
+            });
+        }
+    }
+
+
+    pagos.sort((a,b)=>a.fecha - b.fecha);
+
+    let saldoCap = capitalInicial;
+    let saldoInt = interesInicial;
+    let saldoTot = saldoCap + saldoInt;
+    let fechaInicio = fechaCierre;
+
+    let html = '<table>';
+    html += `<tr><th class="left">Cálculo de intereses compensatorios</th><th>Capital</th><th>Intereses</th><th>Total</th><th>Fecha</th></tr>`;
+    html += `<tr><td class="left">Saldo existente al cierre</td><td>${formatCurrency(saldoCap)}</td><td>${formatCurrency(saldoInt)}</td><td>${formatCurrency(saldoTot)}</td><td>${formatDate(fechaCierre)}</td></tr>`;
+
+    let indicePrev = await findIndexBCRA(fechaCierre);
+
+    for (let pago of pagos) {
+        let indiceActual = await findIndexBCRA(pago.fecha);
+        let interes = saldoTot * coeficiente(indicePrev, indiceActual)/100;
+        saldoInt += interes;
+        saldoTot += interes;
+
+        const desde = new Date(fechaInicio.getFullYear(), fechaInicio.getMonth(), fechaInicio.getDate() + 1);
+        html += `<tr><td class="left">Intereses desde ${formatDate(desde)} hasta ${formatDate(pago.fecha)} = ${formatCurrency(interes)} (Ind. Inic.: ${indicePrev} - Ind. Fin.: ${indiceActual})</td><td>${formatCurrency(saldoCap)}</td><td>${formatCurrency(saldoInt)}</td><td>${formatCurrency(saldoTot)}</td><td>${formatDate(pago.fecha)}</td></tr>`;
+
+        let pagoCap = 0, pagoInt = 0;
+        if (pago.valor > saldoInt) {
+            pagoCap = pago.valor - saldoInt;
+            pagoInt = saldoInt;
+            saldoCap -= pagoCap;
+            saldoInt = 0;
+        } else {
+            pagoInt = pago.valor;
+            saldoInt -= pago.valor;
+        }
+        saldoTot = saldoCap + saldoInt;
+        html += `<tr><td class="left">Menos pago de ${formatCurrency(pago.valor)}</td><td>- ${formatCurrency(pagoCap)}</td><td>- ${formatCurrency(pagoInt)}</td><td>- ${formatCurrency(pago.valor)}</td><td>${formatDate(pago.fecha)}</td></tr>`;
+        html += `<tr><td class="left">Saldo luego del pago</td><td>${formatCurrency(saldoCap)}</td><td>${formatCurrency(saldoInt)}</td><td>${formatCurrency(saldoTot)}</td><td>${formatDate(pago.fecha)}</td></tr>`;
+        fechaInicio = pago.fecha;
+        indicePrev = indiceActual;
+    }
+
+    if (fechaActual > fechaInicio) {
+        let indiceActual = await findIndexBCRA(fechaActual);
+        let interes = saldoTot * coeficiente(indicePrev, indiceActual)/100;
+        saldoInt += interes;
+        saldoTot += interes;
+        const desde = new Date(fechaInicio.getFullYear(), fechaInicio.getMonth(), fechaInicio.getDate() + 1);
+        html += `<tr><td class="left">Intereses desde ${formatDate(desde)} hasta ${formatDate(fechaActual)} = ${formatCurrency(interes)} (Ind. Inic.: ${indicePrev} - Ind. Fin.: ${indiceActual})</td><td>${formatCurrency(saldoCap)}</td><td>${formatCurrency(saldoInt)}</td><td>${formatCurrency(saldoTot)}</td><td>${formatDate(fechaActual)}</td></tr>`;
+    }
+
+    document.getElementById('detalleMora').innerHTML = '';
+    if (fechaMora) {
+        let indiceInicialMora = await findIndexBCRA(new Date(fechaMora.getFullYear(), fechaMora.getMonth(), fechaMora.getDate() - 1));
+        let fechaHastaMora = pagos.length > 0 ? pagos[0].fecha : fechaActual;
+        let indicePago1 = await findIndexBCRA(fechaHastaMora);
+        let coefMora = coeficiente(indiceInicialMora, indicePago1);
+        let capBase = capitalInicial;
+        let interesMora = capBase * coefMora / 100;
+
+        document.getElementById('detalleMora').innerHTML = `
+            <h3>Cálculo de intereses moratorios</h3>
+            <p>Desde: ${formatDate(fechaMora)} Hasta: ${formatDate(fechaHastaMora)}</p>
+            <p>Ind. Inicial: ${indiceInicialMora} – Ind. Final: ${indicePago1}</p>
+            <p>Cálculo Coeficiente: ((( ${indicePago1} + 100) / (${indiceInicialMora} + 100)) - 1) × 100</p>
+            <p>Coef. Act.: ${coefMora.toFixed(4)}</p>
+            <p>Capital: ${formatCurrency(capBase)}</p>
+            <p>Cálculo Intereses: ${formatCurrency(capBase)} × ${coefMora.toFixed(4)} / 100</p>
+            <p style=\"font-weight:bold\">Intereses moratorios: ${formatCurrency(interesMora)}</p>
+        `;
+    }
+
+    html += `<tr><td class=\"right bold\" colspan=\"5\">Saldo final: ${formatCurrency(saldoTot)}</td></tr>`;
+
+    html += '</table>';
+document.getElementById('resultado').innerHTML = html; // tabla compensatorios
+
+document.getElementById('notaMetodo').innerHTML = `
+Método de cálculo: A efectos de calcular la tasa de interés devengada en un determinado período se utiliza la fórmula recomendada por el Comunicado BCRA 14290:<br>
+i = (((100 + Tm) / (100 + T0)) - 1) * 100<br>
+i = tasa de interés expresada en tanto por ciento.<br>
+Tm = valor de la serie de tasas de interés correspondiente al día hasta el cual deben devengarse intereses.<br>
+T0 = valor de la serie de tasas de interés correspondiente al día anterior a partir del cual se devengan los intereses.
+`;
+}
+
+function imprimirTabla() {
+    const w = window.open('', '_blank');
+
+    // Clonar elementos originales
+    const contenido = document.getElementById('resultado').cloneNode(true);
+    const detalle = document.getElementById('detalleMora').cloneNode(true);
+    const nota = document.getElementById('notaMetodo').cloneNode(true);
+
+
+    // Escribir estructura básica
+    w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>Impresión</title><style>'+
+        'body{font-family:"Segoe UI",Arial,sans-serif;margin:30px;color:#333;font-size:14px;line-height:1.2;}' +
+        'table{border-collapse:collapse;width:100%;margin-top:20px;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.1);font-size:14px;line-height:1.2;}' +
+        'th,td{padding:8px 10px;text-align:right;border-bottom:1px solid #e0e0e0;}' +
+        'th{background-color:#1976d2;color:white;font-weight:600;text-align:center;}' +
+        'tr:nth-child(even){background-color:#f9f9f9;}' +
+        'tr:hover{background-color:#f1f5ff;}' +
+        '.left{text-align:left;}.bold{font-weight:700;}.right{text-align:right;}' +
+        '#detalleMora p{margin:4px 0; line-height:1.2; font-size:14px;}' +
+        '</style></head><body></body></html>');
+
+    // Agregar nodos clonados al body de la nueva ventana
+    w.document.body.appendChild(contenido);
+    w.document.body.appendChild(detalle);
+    w.document.body.appendChild(nota);
+
+    // Llamamos print() inmediatamente en el flujo del click del usuario
+    w.focus();
+    w.print();
+    w.onafterprint = () => w.close();
+}
+
+
+function cerrar() {
+    document.getElementById('calcForm').reset();
+    document.getElementById('resultado').innerHTML = '';
+    document.getElementById('detalleMora').innerHTML = '';
+    document.getElementById('pagosContainer').innerHTML = '';
+    pagoCount = 0;
+}
+</script>
+
+</body>
+</html>
