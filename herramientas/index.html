@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Herramientas</title>
 
-	
 <style>
 body {
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
@@ -195,7 +194,9 @@ td {
         <button class="active" onclick="mostrar('computo', this)">Cómputo de servicios</button>
         <button onclick="mostrar('proporcionalidad', this)">Proporcionalidad</button>
         <button onclick="mostrar('prorrateo', this)">Prorrateo de servicios</button>
+	<button onclick="mostrar('embarques',this)">Embarcados</button>
     </div>
+
 
     <!-- ================= CÓMPUTO DE SERVICIOS ================= -->
     <div id="computo">
@@ -205,7 +206,8 @@ td {
                 <tr>
                     <th>Servicio</th>
                     <th>Desde</th>
-                    <th>Hasta</th>
+                  
+  <th>Hasta</th>
                     <th>Tiempo computado</th>
                 </tr>
             </thead>
@@ -273,6 +275,10 @@ td {
     <div class="total" id="resultadoProp"></div>
 </div>
 
+
+	
+	    <!-- ================= PRORRATEO ================= -->
+
 <div id="prorrateo" style="display:none;">
 
 <h2 style="text-align:center;">Sistema de Prorrateo</h2>
@@ -332,7 +338,45 @@ td {
 </div>
 
 
+    <!-- ================= EMBARCADOS ================= -->
+
+    <div id="embarques" style="display:none;">
+
+        <table id="tablaEmbarques">
+            <thead>
+		<tr>
+		<th>Servicio</th>
+		<th>Desde</th>
+		<th>Hasta</th>
+		<th>Efectivo</th>
+		<th>Bonificación</th>
+		<th>Total computado</th>
+		</tr>
+	    </thead>
+            <tbody>
+                <tr>
+		<td>1</td>
+		<td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
+		<td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
+		<td class="efectivo"></td>
+		<td class="bonificado"></td>
+		<td class="resultado"></td>
+		</tr>
+            </tbody>
+        </table>
+
+        <button class="btn-secondary btn" onclick="agregarFila('tablaEmbarques')">+ Agregar servicio</button>
+        <button class="btn" onclick="calcularEmbarcados()">Calcular embarcados</button>
+
+        <div class="total" id="totalEmbarques"></div>
+        <div class="total" id="informeAnual"></div>
+    </div>
+
+
 </div>
+
+
+
 
 <script>
 
@@ -340,6 +384,7 @@ function mostrar(id, boton) {
     document.getElementById("computo").style.display = "none";
     document.getElementById("proporcionalidad").style.display = "none";
     document.getElementById("prorrateo").style.display = "none";
+    document.getElementById("embarques").style.display = "none";
 
     document.getElementById(id).style.display = "block";
 
@@ -378,16 +423,27 @@ function ultimoDiaMes(f) {
 }
 
 // ================= AGREGAR FILA =================
-function agregarFila() {
-    const tbody = document.querySelector("#tablaServicios tbody");
+function agregarFila(tabla = "tablaServicios") {
+    const tbody = document.querySelector(`#${tabla} tbody`);
     const n = tbody.rows.length + 1;
+
     const row = tbody.insertRow();
+
     row.innerHTML = `
         <td>${n}</td>
         <td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
         <td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
+	<td class="efectivo"></td>
+	<td class="bonificado"></td>
         <td class="resultado"></td>
     `;
+}
+
+function diasAamd(dias){
+const a = Math.floor(dias/360);
+const m = Math.floor((dias%360)/30);
+const d = dias%30;
+return `${a} a. ${m} m. ${d} d.`;
 }
 
 
@@ -671,6 +727,132 @@ function calcularProrrateo() {
         ${decimalAamd(servDifAcred)} de servicios diferenciales y
         ${decimalAamd(servComProrr)} de servicios comunes.
     `;
+}
+
+
+function diasEntre(d1, d2) {
+    return Math.floor((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
+}
+
+
+function calcularEmbarcados() {
+
+    const filas = Array.from(document.querySelectorAll('#tablaEmbarques tbody tr'));
+
+    let periodos = [];
+
+    filas.forEach(row => {
+
+        const dTxt = row.cells[1].querySelector('input').value;
+        const hTxt = row.cells[2].querySelector('input').value;
+
+        if (!fechaValida(dTxt) || !fechaValida(hTxt)) {
+            row.cells[3].textContent = '';
+            return;
+        }
+
+        const desde = parseFecha(dTxt);
+        const hasta = parseFecha(hTxt);
+
+        if (hasta < desde) return;
+
+        periodos.push({row, desde, hasta});
+    });
+
+    // ordenar por fecha
+    periodos.sort((a,b)=>a.desde-b.desde);
+
+    // eliminar superposiciones
+    let cubiertoHasta = null;
+
+    periodos.forEach(p => {
+
+        if(cubiertoHasta && p.desde <= cubiertoHasta){
+            p.desde = new Date(cubiertoHasta);
+            p.desde.setDate(p.desde.getDate()+1);
+        }
+
+        if(!cubiertoHasta || p.hasta > cubiertoHasta){
+            cubiertoHasta = new Date(p.hasta);
+        }
+
+    });
+
+    let porAño = {};
+
+    periodos.forEach(p=>{
+
+        let actual = new Date(p.desde);
+
+        while(actual <= p.hasta){
+
+            const año = actual.getFullYear();
+            const finAño = new Date(año,11,31);
+
+            const corte = finAño < p.hasta ? finAño : p.hasta;
+
+                // NUEVO
+	    const diasEfectivos = diasEntre(actual,corte);
+	    const diasBonificados = diasEfectivos;
+	    const dias = diasEfectivos * 2;
+
+            if(!porAño[año]) porAño[año]={usados:0};
+
+            const disponible = 360 - porAño[año].usados;
+
+            const computar = Math.max(0,Math.min(dias,disponible));
+
+            porAño[año].usados += computar;
+		
+		p.row.querySelector(".efectivo").textContent = diasAamd(diasEfectivos);
+		p.row.querySelector(".bonificado").textContent = diasAamd(diasBonificados);
+		p.row.querySelector(".resultado").textContent = diasAamd(computar);
+
+            actual = new Date(corte);
+            actual.setDate(actual.getDate()+1);
+
+        }
+
+    });
+
+    let totalDias = 0;
+
+    Object.values(porAño).forEach(v=>{
+        totalDias += v.usados;
+    });
+
+    const A = Math.floor(totalDias/360);
+    const M = Math.floor((totalDias%360)/30);
+    const D = totalDias%30;
+
+    let informe = '<strong>Informe anual:</strong><br><br>';
+
+    Object.keys(porAño).sort().forEach(año=>{
+
+        const dias = porAño[año].usados;
+
+        const a = Math.floor(dias/360);
+        const m = Math.floor((dias%360)/30);
+        const d = dias%30;
+
+        informe += `${año}: ${a} a. ${m} m. ${d} d.<br>`;
+
+    });
+
+    document.getElementById('totalEmbarques').textContent =
+        `TOTAL BONIFICADO: ${A} a. ${M} m. ${D} d.`;
+
+    document.getElementById('informeAnual').innerHTML = informe;
+
+}
+
+function imprimirEmbarques() {
+    const inputs = document.querySelectorAll('#tablaEmbarques input');
+    inputs.forEach(input => input.setAttribute('value', input.value));
+
+    window.print();
+
+    inputs.forEach(input => input.removeAttribute('value'));
 }
 
 </script>
