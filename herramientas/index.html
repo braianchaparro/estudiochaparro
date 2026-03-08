@@ -201,23 +201,74 @@ td {
     <!-- ================= CÓMPUTO DE SERVICIOS ================= -->
     <div id="computo">
 
+<div style="display:flex; gap:25px; margin-bottom:20px; flex-wrap:wrap;">
+
+    <div class="campo-vertical">
+        <label>Beneficiario</label>
+        <select id="beneficiario" class="input">
+            <option value="H">Hombre</option>
+            <option value="M">Mujer</option>
+        </select>
+    </div>
+
+    <div class="campo-vertical">
+        <label>Fecha de nacimiento</label>
+        <input type="text" id="fnacimiento" class="input"
+               placeholder="DD/MM/AAAA"
+               oninput="formatearFecha(this); calcularEdadCese();">
+    </div>
+
+    <div class="campo-vertical">
+        <label>Fecha de cese</label>
+        <input type="text" id="fcese" class="input"
+               placeholder="DD/MM/AAAA"
+               oninput="formatearFecha(this); calcularEdadCese();">
+    </div>
+
+    <div class="campo-vertical">
+        <label>Edad al cese</label>
+        <input type="text" id="edadCese" class="input" readonly>
+    </div>
+
+</div>
+
         <table id="tablaServicios">
             <thead>
                 <tr>
-                    <th>Servicio</th>
-                    <th>Desde</th>
-                  
-  <th>Hasta</th>
-                    <th>Tiempo computado</th>
+                    <th>Tipo</th>
+<th>Req.</th>
+<th>Desde</th>
+<th>Hasta</th>
+<th>Tiempo computado</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>1</td>
-                    <td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
-                    <td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
-                    <td class="resultado"></td>
-                </tr>
+
+<td>
+<select>
+<option value="dep" selected>Dependientes</option>
+<option value="aut">Autónomos</option>
+</select>
+</td>
+
+<td>
+<select class="req">
+<option>60/30</option>
+<option selected>65/30</option>
+<option>52/25</option>
+<option>50/25</option>
+<option>60/25</option>
+<option>57/25</option>
+</select>
+</td>
+
+<td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
+<td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
+
+<td class="resultado"></td>
+
+</tr>
             </tbody>
         </table>
 
@@ -429,14 +480,32 @@ function agregarFila(tabla = "tablaServicios") {
 
     const row = tbody.insertRow();
 
-    row.innerHTML = `
-        <td>${n}</td>
-        <td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
-        <td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
-	<td class="efectivo"></td>
-	<td class="bonificado"></td>
-        <td class="resultado"></td>
-    `;
+row.innerHTML = `
+
+<td>
+<select>
+<option value="dep" selected>Dependientes</option>
+<option value="aut">Autónomos</option>
+</select>
+</td>
+
+<td>
+<select class="req">
+<option>60/30</option>
+<option>65/30</option>
+<option>52/25</option>
+<option>50/25</option>
+<option>60/25</option>
+<option>57/25</option>
+</select>
+</td>
+
+<td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
+<td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
+
+<td class="resultado"></td>
+
+`;
 }
 
 function diasAamd(dias){
@@ -524,65 +593,262 @@ function calcularPeriodo(desde, hasta) {
 }
 
 
-// ================= CALCULAR TOTAL =================
-function calcular() {
-    let filas = Array.from(document.querySelectorAll("#tablaServicios tbody tr"));
 
-    let periodos = filas.map((row, i) => {
-        const dTxt = row.cells[1].querySelector("input").value;
-        const hTxt = row.cells[2].querySelector("input").value;
+// ================= CALCULAR SERVICIOS =================
 
-        if (!dTxt || !hTxt) return null;
-        if (!fechaValida(dTxt) || !fechaValida(hTxt)) {
-            alert("Fecha inválida en el servicio " + (i+1));
-            throw "Error";
-        }
 
-        const desde = parseFecha(dTxt);
-        const hasta = parseFecha(hTxt);
+function calcular(){
 
-        if (hasta < desde) {
-            alert("La fecha 'Hasta' no puede ser anterior a 'Desde'.");
-            throw "Error";
-        }
+let filas = Array.from(document.querySelectorAll("#tablaServicios tbody tr"));
 
-        return { row, desde, hasta };
-    }).filter(p => p !== null);
+let periodos = filas.map((row,i)=>{
 
-    // Ordenar por fecha desde
-    periodos.sort((a, b) => a.desde - b.desde);
+const tipo = row.cells[0].querySelector("select").value;
 
-    // Ajustar simultaneidad
-    const ajustados = ajustarPorSimultaneos(periodos);
+const dTxt = row.cells[2].querySelector("input").value;
+const hTxt = row.cells[3].querySelector("input").value;
 
-    let totalA = 0, totalM = 0, totalD = 0;
+if(!dTxt || !hTxt) return null;
 
-    ajustados.forEach(p => {
-        const cell = p.row.cells[3];
-
-        if (!p.computable) {
-            cell.textContent = "0 a., 0 m., 0 d.";
-            return;
-        }
-
-        const r = calcularPeriodo(p.desde, p.hasta);
-        cell.textContent = `${r.años} a., ${r.meses} m., ${r.dias} d.`;
-
-        totalA += r.años;
-        totalM += r.meses;
-        totalD += r.dias;
-    });
-
-    // Normalización ANSES
-    totalM += Math.floor(totalD / 30);
-    totalD = totalD % 30;
-
-    totalA += Math.floor(totalM / 12);
-    totalM = totalM % 12;
-
-    document.getElementById("totalFinal").textContent =
-        `TOTAL: ${totalA} a., ${totalM} m., ${totalD} d.`;
+if(!fechaValida(dTxt) || !fechaValida(hTxt)){
+alert("Fecha inválida en el servicio "+(i+1));
+throw "Error";
 }
+
+const desde = parseFecha(dTxt);
+const hasta = parseFecha(hTxt);
+
+if(hasta < desde){
+alert("La fecha Hasta no puede ser anterior a Desde");
+throw "Error";
+}
+
+return {row,tipo,desde,hasta};
+
+}).filter(p=>p!==null);
+
+
+// ================= COMPUTO NORMAL =================
+
+let ajustados = ajustarPorSimultaneos([...periodos].sort((a,b)=>a.desde-b.desde));
+
+let totalA=0,totalM=0,totalD=0;
+
+ajustados.forEach(p=>{
+
+const cell = p.row.cells[4];
+
+if(!p.computable){
+cell.textContent="0 a., 0 m., 0 d.";
+return;
+}
+
+const r = calcularPeriodo(p.desde,p.hasta);
+
+cell.textContent=`${r.años} a., ${r.meses} m., ${r.dias} d.`;
+
+totalA+=r.años;
+totalM+=r.meses;
+totalD+=r.dias;
+
+});
+
+totalM+=Math.floor(totalD/30);
+totalD=totalD%30;
+
+totalA+=Math.floor(totalM/12);
+totalM=totalM%12;
+
+const diasServicios = totalA*360 + totalM*30 + totalD;
+
+
+// ================= FUNCION DIAS 360 =================
+
+function dias360(d1,d2){
+
+let a1=d1.getFullYear();
+let m1=d1.getMonth()+1;
+let d1d=d1.getDate();
+
+let a2=d2.getFullYear();
+let m2=d2.getMonth()+1;
+let d2d=d2.getDate();
+
+if(d1d==31)d1d=30;
+if(d2d==31)d2d=30;
+
+return (a2-a1)*360 + (m2-m1)*30 + (d2d-d1d) + 1;
+
+}
+
+
+// ================= INFORME =================
+
+let deps = periodos.filter(p=>p.tipo=="dep");
+let auts = periodos.filter(p=>p.tipo=="aut");
+
+const corte = new Date(1994,6,1);
+const corteAnt = new Date(1994,5,30);
+
+let depAntes=0;
+let depDesp=0;
+
+let autAntes=0;
+let autDesp=0;
+
+let simAntes=0;
+let simDesp=0;
+
+
+// ===== DEPENDIENTES =====
+
+deps.forEach(p=>{
+
+if(p.hasta < corte){
+
+depAntes += dias360(p.desde,p.hasta);
+
+}else if(p.desde >= corte){
+
+depDesp += dias360(p.desde,p.hasta);
+
+}else{
+
+depAntes += dias360(p.desde,corteAnt);
+depDesp += dias360(corte,p.hasta);
+
+}
+
+});
+
+
+// ===== AUTONOMOS =====
+
+auts.forEach(p=>{
+
+if(p.hasta < corte){
+
+autAntes += dias360(p.desde,p.hasta);
+
+}else if(p.desde >= corte){
+
+autDesp += dias360(p.desde,p.hasta);
+
+}else{
+
+autAntes += dias360(p.desde,corteAnt);
+autDesp += dias360(corte,p.hasta);
+
+}
+
+});
+
+
+// ===== SIMULTANEOS =====
+
+deps.forEach(dep=>{
+
+auts.forEach(aut=>{
+
+const inicio = dep.desde > aut.desde ? dep.desde : aut.desde;
+const fin = dep.hasta < aut.hasta ? dep.hasta : aut.hasta;
+
+if(fin >= inicio){
+
+if(fin < corte){
+
+simAntes += dias360(inicio,fin);
+
+}else if(inicio >= corte){
+
+simDesp += dias360(inicio,fin);
+
+}else{
+
+simAntes += dias360(inicio,corteAnt);
+simDesp += dias360(corte,fin);
+
+}
+
+}
+
+});
+
+});
+
+
+// ===== AJUSTE FINAL =====
+
+depAntes -= simAntes;
+depDesp -= simDesp;
+
+autAntes -= simAntes;
+autDesp -= simDesp;
+
+
+// ================= EXCEDENTE =================
+
+const diasExcedente = calcularExcedenteEdad(diasServicios);
+const totalFinalDias = diasServicios + diasExcedente;
+
+
+// ================= TEXTO =================
+
+const serviciosTxt = diasAamd(diasServicios);
+const excedenteTxt = diasAamd(diasExcedente);
+const totalTxt = diasAamd(totalFinalDias);
+
+let informe="";
+
+if(diasExcedente>0){
+
+informe+=`Tiempo computado: ${serviciosTxt}<br>`;
+informe+=`Excedente de edad (art.19 ley 24.241): ${excedenteTxt}<br>`;
+informe+=`<strong>TOTAL: ${totalTxt}</strong>`;
+
+}else{
+
+informe+=`<strong>TOTAL: ${serviciosTxt}</strong>`;
+
+}
+
+informe+="<br><br><strong>Servicios por período</strong><br><br>";
+
+informe+=`
+<table style="margin:auto">
+
+<tr>
+<th></th>
+<th>Antes del 07/1994</th>
+<th>Después del 07/1994</th>
+</tr>
+
+<tr>
+<td>Dependientes</td>
+<td>${diasAamd(depAntes)}</td>
+<td>${diasAamd(depDesp)}</td>
+</tr>
+
+<tr>
+<td>Autónomos</td>
+<td>${diasAamd(autAntes)}</td>
+<td>${diasAamd(autDesp)}</td>
+</tr>
+
+<tr>
+<td>Simultáneos</td>
+<td>${diasAamd(simAntes)}</td>
+<td>${diasAamd(simDesp)}</td>
+</tr>
+
+</table>
+`;
+
+document.getElementById("totalFinal").innerHTML=informe;
+
+}
+
+
 
 // ================= IMPRIMIR =================
 function imprimir() {
@@ -853,6 +1119,96 @@ function imprimirEmbarques() {
     window.print();
 
     inputs.forEach(input => input.removeAttribute('value'));
+}
+
+
+function ponerFechaActualCese() {
+
+    const hoy = new Date();
+
+    const d = String(hoy.getDate()).padStart(2,'0');
+    const m = String(hoy.getMonth()+1).padStart(2,'0');
+    const a = hoy.getFullYear();
+
+    document.getElementById("fcese").value = `${d}/${m}/${a}`;
+}
+
+function calcularEdadCese(){
+
+    const fnTxt = document.getElementById("fnacimiento").value;
+    const fcTxt = document.getElementById("fcese").value;
+
+    if(!fechaValida(fnTxt) || !fechaValida(fcTxt)){
+        document.getElementById("edadCese").value = "";
+        return;
+    }
+
+    const fn = parseFecha(fnTxt);
+    const fc = parseFecha(fcTxt);
+
+    let años = fc.getFullYear() - fn.getFullYear();
+    let meses = fc.getMonth() - fn.getMonth();
+    let dias = fc.getDate() - fn.getDate();
+
+    if(dias < 0){
+        meses--;
+        const mesAnterior = new Date(fc.getFullYear(), fc.getMonth(), 0).getDate();
+        dias += mesAnterior;
+    }
+
+    if(meses < 0){
+        años--;
+        meses += 12;
+    }
+
+    document.getElementById("edadCese").value =
+        `${años} a. ${meses} m. ${dias} d.`;
+}
+
+window.onload = function(){
+    ponerFechaActualCese();
+    calcularEdadCese();
+}
+
+function calcularExcedenteEdad(diasServicios){
+
+    const LIMITE = 30 * 360;
+
+    // Si ya tiene 30 años o más, no corresponde excedente
+    if(diasServicios >= LIMITE){
+        return 0;
+    }
+
+    const sexo = document.getElementById("beneficiario").value;
+    const fnTxt = document.getElementById("fnacimiento").value;
+    const fcTxt = document.getElementById("fcese").value;
+
+    if(!fechaValida(fnTxt) || !fechaValida(fcTxt)){
+        return 0;
+    }
+
+    const fn = parseFecha(fnTxt);
+    const fc = parseFecha(fcTxt);
+
+    const edadJubilatoria = sexo === "H" ? 65 : 60;
+
+    const fechaJub = new Date(fn);
+    fechaJub.setFullYear(fn.getFullYear() + edadJubilatoria);
+
+    if(fc <= fechaJub){
+        return 0;
+    }
+
+    const diasExcedente = diasEntre(fechaJub, fc);
+
+    // mitad del excedente
+    const excedenteCalculado = Math.floor(diasExcedente / 2);
+
+    // tiempo faltante para 30 años
+    const faltante = LIMITE - diasServicios;
+
+    // el excedente no puede superar el faltante
+    return Math.min(excedenteCalculado, faltante);
 }
 
 </script>
