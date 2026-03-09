@@ -236,7 +236,6 @@ td {
             <thead>
                 <tr>
                     <th>Tipo</th>
-<th>Req.</th>
 <th>Desde</th>
 <th>Hasta</th>
 <th>Tiempo computado</th>
@@ -252,16 +251,6 @@ td {
 </select>
 </td>
 
-<td>
-<select class="req">
-<option>60/30</option>
-<option selected>65/30</option>
-<option>52/25</option>
-<option>50/25</option>
-<option>60/25</option>
-<option>57/25</option>
-</select>
-</td>
 
 <td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
 <td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
@@ -489,16 +478,6 @@ row.innerHTML = `
 </select>
 </td>
 
-<td>
-<select class="req">
-<option>60/30</option>
-<option>65/30</option>
-<option>52/25</option>
-<option>50/25</option>
-<option>60/25</option>
-<option>57/25</option>
-</select>
-</td>
 
 <td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
 <td><input type="text" placeholder="DD/MM/AAAA" oninput="formatearFecha(this)"></td>
@@ -509,6 +488,7 @@ row.innerHTML = `
 }
 
 function diasAamd(dias){
+if(dias < 0) dias = 0;
 const a = Math.floor(dias/360);
 const m = Math.floor((dias%360)/30);
 const d = dias%30;
@@ -605,8 +585,8 @@ let periodos = filas.map((row,i)=>{
 
 const tipo = row.cells[0].querySelector("select").value;
 
-const dTxt = row.cells[2].querySelector("input").value;
-const hTxt = row.cells[3].querySelector("input").value;
+const dTxt = row.cells[1].querySelector("input").value;
+const hTxt = row.cells[2].querySelector("input").value;
 
 if(!dTxt || !hTxt) return null;
 
@@ -636,7 +616,7 @@ let totalA=0,totalM=0,totalD=0;
 
 ajustados.forEach(p=>{
 
-const cell = p.row.cells[4];
+const cell = p.row.cells[3];
 
 if(!p.computable){
 cell.textContent="0 a., 0 m., 0 d.";
@@ -684,8 +664,11 @@ return (a2-a1)*360 + (m2-m1)*30 + (d2d-d1d) + 1;
 
 // ================= INFORME =================
 
-let deps = periodos.filter(p=>p.tipo=="dep");
-let auts = periodos.filter(p=>p.tipo=="aut");
+let deps = ajustados.filter(p=>p.tipo=="dep" && p.computable);
+let auts = ajustados.filter(p=>p.tipo=="aut" && p.computable);
+
+let depsOrig = periodos.filter(p=>p.tipo=="dep");
+let autsOrig = periodos.filter(p=>p.tipo=="aut");
 
 const corte = new Date(1994,6,1);
 const corteAnt = new Date(1994,5,30);
@@ -744,16 +727,62 @@ autDesp += dias360(corte,p.hasta);
 });
 
 
-// ===== SIMULTANEOS =====
+// ===== SIMULTANEOS (CÁLCULO ROBUSTO) =====
 
-deps.forEach(dep=>{
+// 1) Detectar todas las intersecciones dep/aut
+let intersecciones = [];
 
-auts.forEach(aut=>{
+depsOrig.forEach(dep=>{
+autsOrig.forEach(aut=>{
 
 const inicio = dep.desde > aut.desde ? dep.desde : aut.desde;
 const fin = dep.hasta < aut.hasta ? dep.hasta : aut.hasta;
 
 if(fin >= inicio){
+intersecciones.push({desde:new Date(inicio), hasta:new Date(fin)});
+}
+
+});
+});
+
+
+// 2) Ordenar intervalos
+intersecciones.sort((a,b)=>a.desde-b.desde);
+
+
+// 3) Unificar intervalos superpuestos
+let unificados = [];
+
+intersecciones.forEach(int=>{
+
+if(unificados.length===0){
+unificados.push(int);
+return;
+}
+
+let ult = unificados[unificados.length-1];
+
+if(int.desde <= ult.hasta){
+
+if(int.hasta > ult.hasta){
+ult.hasta = int.hasta;
+}
+
+}else{
+
+unificados.push(int);
+
+}
+
+});
+
+
+// 4) Calcular días antes y después del corte
+
+unificados.forEach(p=>{
+
+const inicio = p.desde;
+const fin = p.hasta;
 
 if(fin < corte){
 
@@ -770,20 +799,12 @@ simDesp += dias360(corte,fin);
 
 }
 
-}
-
 });
-
-});
-
 
 // ===== AJUSTE FINAL =====
 
 depAntes -= simAntes;
 depDesp -= simDesp;
-
-autAntes -= simAntes;
-autDesp -= simDesp;
 
 
 // ================= EXCEDENTE =================
