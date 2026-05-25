@@ -8,20 +8,21 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
-    --bg:#070b12;
-    --panel:#101826;
-    --panel-soft:#151f2f;
-    --gold:#c9a96a;
-    --gold-light:#f1d28d;
+    --ink:#0b0f17;
+    --ink-soft:#121926;
+    --paper:#f8f5ee;
+    --paper-soft:#eee8dc;
+    --gold:#c7a15b;
+    --gold-light:#edd39a;
     --text:#f8fafc;
-    --muted:#a8b3c5;
-    --muted-dark:#64748b;
-    --line:rgba(255,255,255,0.10);
-    --white:#ffffff;
+    --muted:#c8d0dc;
+    --muted-dark:#657184;
+    --line:rgba(255,255,255,0.14);
+    --line-dark:rgba(11,15,23,0.12);
 }
 
 *{
@@ -30,248 +31,373 @@
     box-sizing:border-box;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     font-family:"Inter","Segoe UI",Arial,sans-serif;
     min-height:100vh;
     color:var(--text);
-    background:
-        linear-gradient(rgba(7,11,18,.82), rgba(7,11,18,.92)),
-        url("https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1800&q=80");
-    background-size:cover;
-    background-position:center;
+    background:var(--ink);
 }
 
 body::before{
     content:"";
     position:fixed;
     inset:0;
+    z-index:-2;
+    background:
+        linear-gradient(90deg, rgba(11,15,23,.72), rgba(11,15,23,.64), rgba(11,15,23,.92)),
+        url("https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=2200&q=85");
+    background-size:cover;
+    background-position:center;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
     pointer-events:none;
     background:
-        linear-gradient(90deg, rgba(201,169,106,.08) 1px, transparent 1px),
-        linear-gradient(rgba(201,169,106,.06) 1px, transparent 1px);
-    background-size:64px 64px;
-    mask-image:linear-gradient(to bottom, rgba(0,0,0,.75), transparent 75%);
+        linear-gradient(90deg, rgba(237,211,154,.09) 1px, transparent 1px),
+        linear-gradient(rgba(237,211,154,.07) 1px, transparent 1px);
+    background-size:72px 72px;
+    mask-image:linear-gradient(to bottom, rgba(0,0,0,.78), transparent 72%);
 }
 
 .page{
-    position:relative;
-    width:min(1180px, calc(100% - 40px));
-    margin:0 auto;
+    width:min(1220px, calc(100% - 44px));
     min-height:100vh;
+    margin:0 auto;
     display:flex;
     flex-direction:column;
 }
 
 .topbar{
+    height:92px;
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    padding:28px 0;
+    justify-content:space-between;
+    gap:28px;
     border-bottom:1px solid var(--line);
 }
 
 .brand{
     display:flex;
     align-items:center;
-    gap:14px;
+    gap:16px;
 }
 
 .brand-mark{
-    width:42px;
-    height:42px;
-    border:1px solid rgba(241,210,141,.55);
+    width:48px;
+    height:48px;
     display:grid;
     place-items:center;
+    border:1px solid rgba(237,211,154,.55);
     color:var(--gold-light);
-    font-weight:800;
+    font-weight:900;
     letter-spacing:.5px;
-    background:rgba(255,255,255,.04);
-}
-
-.brand-text{
-    line-height:1.1;
+    background:linear-gradient(145deg, rgba(255,255,255,.11), rgba(255,255,255,.02));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.16);
 }
 
 .brand-title{
     font-size:14px;
-    font-weight:800;
-    letter-spacing:2px;
+    font-weight:900;
+    letter-spacing:2.8px;
     text-transform:uppercase;
 }
 
 .brand-subtitle{
-    margin-top:4px;
+    margin-top:5px;
     color:var(--muted);
     font-size:13px;
 }
 
-.badge{
-    border:1px solid rgba(241,210,141,.35);
-    color:var(--gold-light);
-    padding:9px 14px;
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:1.5px;
-    text-transform:uppercase;
-    background:rgba(201,169,106,.08);
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+.status{
+    width:8px;
+    height:8px;
+    background:var(--gold-light);
+    box-shadow:0 0 18px rgba(237,211,154,.7);
 }
 
 .hero{
-    padding:84px 0 56px;
-    max-width:920px;
+    padding:86px 0 52px;
 }
 
 .kicker{
+    display:flex;
+    align-items:center;
+    gap:14px;
     color:var(--gold-light);
-    font-size:13px;
-    font-weight:800;
-    letter-spacing:3px;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:3.4px;
     text-transform:uppercase;
-    margin-bottom:20px;
+    margin-bottom:24px;
+}
+
+.kicker::before{
+    content:"";
+    width:54px;
+    height:1px;
+    background:var(--gold-light);
 }
 
 h1{
-    font-size:clamp(42px, 7vw, 86px);
-    line-height:.96;
-    letter-spacing:0;
-    max-width:850px;
+    max-width:920px;
+    font-size:clamp(46px, 7vw, 96px);
+    line-height:.92;
+    font-weight:900;
+    letter-spacing:-1px;
 }
 
 .lead{
-    margin-top:26px;
+    margin-top:28px;
     max-width:720px;
-    color:#d4dbe7;
+    color:#d7dee9;
     font-size:clamp(17px, 2vw, 21px);
-    line-height:1.65;
+    line-height:1.68;
+}
+
+.tools-wrap{
+    padding:0;
+    border:0;
+    background:transparent;
+    box-shadow:none;
+    backdrop-filter:none;
 }
 
 .tools{
     display:grid;
     grid-template-columns:repeat(3, 1fr);
-    gap:18px;
-    padding-bottom:74px;
+    gap:20px;
+    background:transparent;
 }
 
 .card{
     position:relative;
-    min-height:260px;
-    padding:28px;
+    min-height:286px;
+    padding:32px 30px;
     text-decoration:none;
     color:var(--text);
-    background:linear-gradient(180deg, rgba(18,27,42,.92), rgba(12,18,29,.92));
-    border:1px solid var(--line);
-    box-shadow:0 24px 70px rgba(0,0,0,.34);
+    background:
+        linear-gradient(180deg, rgba(20,30,46,.94), rgba(10,16,27,.94));
+    border:1px solid rgba(255,255,255,.13);
+    box-shadow:
+        0 24px 70px rgba(0,0,0,.34),
+        inset 0 1px 0 rgba(255,255,255,.08);
     overflow:hidden;
-    transition:transform .22s ease, border-color .22s ease, background .22s ease;
+    transition:transform .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:4px;
+    background:linear-gradient(90deg, var(--gold), var(--gold-light), transparent);
+    opacity:.95;
 }
 
 .card::after{
     content:"";
     position:absolute;
-    inset:auto 28px 0 28px;
-    height:3px;
-    background:linear-gradient(90deg,var(--gold),transparent);
-    opacity:.75;
+    inset:0;
+    background:
+        radial-gradient(circle at top right, rgba(237,211,154,.14), transparent 34%),
+        linear-gradient(135deg, rgba(255,255,255,.06), transparent 46%);
+    opacity:.55;
+    pointer-events:none;
+    transition:opacity .22s ease;
 }
 
 .card:hover{
     transform:translateY(-7px);
-    border-color:rgba(241,210,141,.55);
-    background:linear-gradient(180deg, rgba(25,37,56,.96), rgba(13,20,32,.96));
+    border-color:rgba(237,211,154,.48);
+    background:
+        linear-gradient(180deg, rgba(27,40,61,.97), rgba(12,19,31,.97));
+    box-shadow:
+        0 32px 80px rgba(0,0,0,.42),
+        inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+.card:hover::after{
+    opacity:.85;
 }
 
 .icon{
-    width:54px;
-    height:54px;
+    position:relative;
+    z-index:1;
+    width:58px;
+    height:58px;
     display:grid;
     place-items:center;
     margin-bottom:28px;
-    border:1px solid rgba(241,210,141,.45);
-    background:rgba(201,169,106,.10);
     color:var(--gold-light);
+    border:1px solid rgba(237,211,154,.42);
+    background:rgba(199,161,91,.10);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.icon::after{
+    display:none;
 }
 
 .icon svg{
-    width:27px;
-    height:27px;
+    width:28px;
+    height:28px;
     stroke:currentColor;
-    stroke-width:1.8;
+    stroke-width:1.75;
     fill:none;
 }
 
 .card h2{
-    font-size:22px;
-    line-height:1.18;
+    position:relative;
+    z-index:1;
+    max-width:280px;
+    font-size:23px;
+    line-height:1.16;
     margin-bottom:14px;
+    letter-spacing:0;
 }
 
 .card p{
+    position:relative;
+    z-index:1;
+    max-width:330px;
     color:var(--muted);
     font-size:15px;
-    line-height:1.6;
-    max-width:310px;
+    line-height:1.65;
 }
 
 .card-link{
     position:absolute;
-    left:28px;
-    bottom:28px;
+    z-index:1;
+    left:31px;
+    bottom:31px;
     color:var(--gold-light);
-    font-size:13px;
-    font-weight:800;
-    letter-spacing:1.4px;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1.8px;
     text-transform:uppercase;
+}
+
+.card-link::after{
+    content:"";
+    display:inline-block;
+    width:42px;
+    height:1px;
+    margin-left:12px;
+    vertical-align:middle;
+    background:var(--gold-light);
+    transition:width .22s ease;
+}
+
+.card:hover .card-link::after{
+    width:58px;
 }
 
 footer{
     margin-top:auto;
-    padding:24px 0 34px;
-    border-top:1px solid var(--line);
-    color:#94a3b8;
-    font-size:13px;
-    display:flex;
-    justify-content:space-between;
-    gap:18px;
+    padding:34px 0 26px;
+    color:#aab3c2;
 }
 
-@media (max-width:900px){
+.footer-main{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding-top:22px;
+    border-top:1px solid var(--line);
+    font-size:13px;
+}
+
+.contact-mini{
+    margin-top:11px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 18px;
+    color:#8f9aaa;
+    font-size:11px;
+    line-height:1.4;
+}
+
+.contact-mini a{
+    color:#aeb8c8;
+    text-decoration:none;
+}
+
+.contact-mini a:hover{
+    color:var(--gold-light);
+}
+
+@media (max-width:940px){
     .tools{
         grid-template-columns:1fr;
     }
 
     .card{
-        min-height:220px;
-    }
-
-    .hero{
-        padding-top:58px;
+        min-height:238px;
     }
 }
 
 @media (max-width:640px){
     .page{
-        width:min(100% - 28px, 1180px);
+        width:min(100% - 28px, 1220px);
     }
 
     .topbar{
+        height:auto;
+        padding:24px 0;
         align-items:flex-start;
-        gap:18px;
         flex-direction:column;
     }
 
-    .badge{
+    .top-actions{
         display:none;
     }
 
     .hero{
-        padding:48px 0 36px;
+        padding:54px 0 40px;
+    }
+
+    h1{
+        letter-spacing:-.4px;
     }
 
     .lead{
         font-size:16px;
     }
 
-    footer{
+    .tools-wrap{
+        padding:10px;
+    }
+
+    .card{
+        padding:26px;
+    }
+
+    .card-link{
+        left:26px;
+        bottom:26px;
+    }
+
+    .footer-main{
+        align-items:flex-start;
         flex-direction:column;
     }
 }
@@ -285,13 +411,16 @@ footer{
     <nav class="topbar">
         <div class="brand">
             <div class="brand-mark">EC</div>
-            <div class="brand-text">
+            <div>
                 <div class="brand-title">Estudio Chaparro</div>
                 <div class="brand-subtitle">Jurídico previsional</div>
             </div>
         </div>
 
-        <div class="badge">Herramientas técnicas</div>
+        <div class="top-actions">
+            <span class="status"></span>
+            <span>Herramientas profesionales de cálculo previsional</span>
+        </div>
     </nav>
 
     <main>
@@ -306,74 +435,84 @@ footer{
             </p>
         </section>
 
-        <section class="tools">
+        <section class="tools-wrap">
+            <div class="tools">
 
-            <a class="card" href="/calculadoraintereses/">
-                <div class="icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M4 19V5"></path>
-                        <path d="M4 19h16"></path>
-                        <path d="M8 16v-5"></path>
-                        <path d="M12 16V8"></path>
-                        <path d="M16 16v-3"></path>
-                    </svg>
-                </div>
+                <a class="card" href="/calculadoraintereses/">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 19V5"></path>
+                            <path d="M4 19h16"></path>
+                            <path d="M8 16v-5"></path>
+                            <path d="M12 16V8"></path>
+                            <path d="M16 16v-3"></path>
+                        </svg>
+                    </div>
 
-                <h2>Calculadora de Intereses</h2>
+                    <h2>Calculadora de Intereses</h2>
 
-                <p>
-                    Actualización de liquidaciones, intereses compensatorios,
-                    moratorios e imputación de pagos.
-                </p>
+                    <p>
+                        Actualización de liquidaciones, intereses compensatorios,
+                        moratorios e imputación ordenada de pagos.
+                    </p>
 
-                <span class="card-link">Ingresar</span>
-            </a>
+                    <span class="card-link">Ingresar</span>
+                </a>
 
-            <a class="card" href="/movilidadhaber/">
-                <div class="icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M4 18l6-6 4 4 6-8"></path>
-                        <path d="M14 8h6v6"></path>
-                    </svg>
-                </div>
+                <a class="card" href="/movilidadhaber/">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 18l6-6 4 4 6-8"></path>
+                            <path d="M14 8h6v6"></path>
+                        </svg>
+                    </div>
 
-                <h2>Movilidad del Haber</h2>
+                    <h2>Movilidad del Haber</h2>
 
-                <p>
-                    Consulta y análisis de movilidad según criterios judiciales
-                    aplicables en materia previsional.
-                </p>
+                    <p>
+                        Consulta y análisis de movilidad conforme criterios judiciales
+                        aplicables en materia previsional.
+                    </p>
 
-                <span class="card-link">Ingresar</span>
-            </a>
+                    <span class="card-link">Ingresar</span>
+                </a>
 
-            <a class="card" href="/herramientas/">
-                <div class="icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M14 7l3 3"></path>
-                        <path d="M5 19l8.5-8.5"></path>
-                        <path d="M15 5l4 4-2 2-4-4z"></path>
-                        <path d="M6 5h4"></path>
-                        <path d="M8 3v4"></path>
-                    </svg>
-                </div>
+                <a class="card" href="/herramientas/">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M14 7l3 3"></path>
+                            <path d="M5 19l8.5-8.5"></path>
+                            <path d="M15 5l4 4-2 2-4-4z"></path>
+                            <path d="M6 5h4"></path>
+                            <path d="M8 3v4"></path>
+                        </svg>
+                    </div>
 
-                <h2>Herramientas</h2>
+                    <h2>Herramientas</h2>
 
-                <p>
-                    Cómputo de servicios, prorrateo, proporcionalidad y soporte
-                    técnico para tareas previsionales.
-                </p>
+                    <p>
+                        Cómputo de servicios, prorrateo, proporcionalidad y soporte
+                        técnico para tareas previsionales.
+                    </p>
 
-                <span class="card-link">Ingresar</span>
-            </a>
+                    <span class="card-link">Ingresar</span>
+                </a>
 
+            </div>
         </section>
     </main>
 
     <footer>
-        <span>© 2026 Estudio Chaparro</span>
-        <span>Todos los derechos reservados</span>
+        <div class="footer-main">
+            <span>© 2026 Estudio Chaparro</span>
+            <span>Todos los derechos reservados</span>
+        </div>
+
+        <div class="contact-mini">
+            <span>Contacto</span>
+            <a href="mailto:braianchaparro.abogado@gmail.com">braianchaparro.abogado@gmail.com</a>
+            <a href="tel:+542235825498">+54 223 5 825498</a>
+        </div>
     </footer>
 
 </div>
