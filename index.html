@@ -8,17 +8,20 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
-    --bg:#0f172a;
-    --bg-secondary:#1e293b;
-    --card:#ffffff;
-    --primary:#c9a96a;
-    --text:#e5e7eb;
-    --text-dark:#1f2937;
-    --border:rgba(255,255,255,0.08);
+    --bg:#070b12;
+    --panel:#101826;
+    --panel-soft:#151f2f;
+    --gold:#c9a96a;
+    --gold-light:#f1d28d;
+    --text:#f8fafc;
+    --muted:#a8b3c5;
+    --muted-dark:#64748b;
+    --line:rgba(255,255,255,0.10);
+    --white:#ffffff;
 }
 
 *{
@@ -28,197 +31,352 @@
 }
 
 body{
-    font-family: "Segoe UI", Arial, sans-serif;
-    background:
-        radial-gradient(circle at top left, #24364d 0%, transparent 35%),
-        radial-gradient(circle at bottom right, #1d2d44 0%, transparent 30%),
-        linear-gradient(135deg, #0f172a, #111827);
+    font-family:"Inter","Segoe UI",Arial,sans-serif;
     min-height:100vh;
     color:var(--text);
+    background:
+        linear-gradient(rgba(7,11,18,.82), rgba(7,11,18,.92)),
+        url("https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1800&q=80");
+    background-size:cover;
+    background-position:center;
 }
 
-header{
-    padding:70px 20px 40px;
-    text-align:center;
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+        linear-gradient(90deg, rgba(201,169,106,.08) 1px, transparent 1px),
+        linear-gradient(rgba(201,169,106,.06) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:linear-gradient(to bottom, rgba(0,0,0,.75), transparent 75%);
 }
 
-.logo{
-    font-size:18px;
-    letter-spacing:4px;
+.page{
+    position:relative;
+    width:min(1180px, calc(100% - 40px));
+    margin:0 auto;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:28px 0;
+    border-bottom:1px solid var(--line);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.brand-mark{
+    width:42px;
+    height:42px;
+    border:1px solid rgba(241,210,141,.55);
+    display:grid;
+    place-items:center;
+    color:var(--gold-light);
+    font-weight:800;
+    letter-spacing:.5px;
+    background:rgba(255,255,255,.04);
+}
+
+.brand-text{
+    line-height:1.1;
+}
+
+.brand-title{
+    font-size:14px;
+    font-weight:800;
+    letter-spacing:2px;
     text-transform:uppercase;
-    color:var(--primary);
-    margin-bottom:14px;
+}
+
+.brand-subtitle{
+    margin-top:4px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+.badge{
+    border:1px solid rgba(241,210,141,.35);
+    color:var(--gold-light);
+    padding:9px 14px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    background:rgba(201,169,106,.08);
+}
+
+.hero{
+    padding:84px 0 56px;
+    max-width:920px;
+}
+
+.kicker{
+    color:var(--gold-light);
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin-bottom:20px;
 }
 
 h1{
-    font-size:52px;
-    font-weight:700;
-    margin-bottom:12px;
+    font-size:clamp(42px, 7vw, 86px);
+    line-height:.96;
+    letter-spacing:0;
+    max-width:850px;
 }
 
-.subtitulo{
-    font-size:18px;
-    color:#cbd5e1;
-    max-width:700px;
-    margin:auto;
-    line-height:1.6;
+.lead{
+    margin-top:26px;
+    max-width:720px;
+    color:#d4dbe7;
+    font-size:clamp(17px, 2vw, 21px);
+    line-height:1.65;
 }
 
-.container{
-    max-width:1200px;
-    margin:auto;
-    padding:30px 25px 80px;
+.tools{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:28px;
+    grid-template-columns:repeat(3, 1fr);
+    gap:18px;
+    padding-bottom:74px;
 }
 
 .card{
     position:relative;
-    overflow:hidden;
-    background:rgba(255,255,255,0.96);
-    border:1px solid rgba(255,255,255,0.15);
-    border-radius:22px;
-    padding:35px 30px;
+    min-height:260px;
+    padding:28px;
     text-decoration:none;
-    color:var(--text-dark);
-    transition:all .25s ease;
-    box-shadow:
-        0 10px 30px rgba(0,0,0,0.20),
-        inset 0 1px 0 rgba(255,255,255,0.6);
+    color:var(--text);
+    background:linear-gradient(180deg, rgba(18,27,42,.92), rgba(12,18,29,.92));
+    border:1px solid var(--line);
+    box-shadow:0 24px 70px rgba(0,0,0,.34);
+    overflow:hidden;
+    transition:transform .22s ease, border-color .22s ease, background .22s ease;
 }
 
-.card::before{
+.card::after{
     content:"";
     position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:5px;
-    background:linear-gradient(90deg,var(--primary),#e7c78b);
+    inset:auto 28px 0 28px;
+    height:3px;
+    background:linear-gradient(90deg,var(--gold),transparent);
+    opacity:.75;
 }
 
 .card:hover{
-    transform:translateY(-8px);
-    box-shadow:
-        0 18px 40px rgba(0,0,0,0.25);
+    transform:translateY(-7px);
+    border-color:rgba(241,210,141,.55);
+    background:linear-gradient(180deg, rgba(25,37,56,.96), rgba(13,20,32,.96));
 }
 
 .icon{
-    width:72px;
-    height:72px;
-    border-radius:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:34px;
-    margin-bottom:22px;
-    background:linear-gradient(135deg,#f4e4c1,#d6b277);
-    color:#3b2b12;
+    width:54px;
+    height:54px;
+    display:grid;
+    place-items:center;
+    margin-bottom:28px;
+    border:1px solid rgba(241,210,141,.45);
+    background:rgba(201,169,106,.10);
+    color:var(--gold-light);
 }
 
-.titulo{
+.icon svg{
+    width:27px;
+    height:27px;
+    stroke:currentColor;
+    stroke-width:1.8;
+    fill:none;
+}
+
+.card h2{
     font-size:22px;
-    font-weight:700;
-    margin-bottom:12px;
+    line-height:1.18;
+    margin-bottom:14px;
 }
 
-.descripcion{
+.card p{
+    color:var(--muted);
     font-size:15px;
     line-height:1.6;
-    color:#4b5563;
+    max-width:310px;
+}
+
+.card-link{
+    position:absolute;
+    left:28px;
+    bottom:28px;
+    color:var(--gold-light);
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:1.4px;
+    text-transform:uppercase;
 }
 
 footer{
-    text-align:center;
-    padding:30px 20px 50px;
+    margin-top:auto;
+    padding:24px 0 34px;
+    border-top:1px solid var(--line);
     color:#94a3b8;
-    font-size:14px;
+    font-size:13px;
+    display:flex;
+    justify-content:space-between;
+    gap:18px;
 }
 
-@media (max-width:768px){
-
-    h1{
-        font-size:38px;
+@media (max-width:900px){
+    .tools{
+        grid-template-columns:1fr;
     }
 
-    .subtitulo{
+    .card{
+        min-height:220px;
+    }
+
+    .hero{
+        padding-top:58px;
+    }
+}
+
+@media (max-width:640px){
+    .page{
+        width:min(100% - 28px, 1180px);
+    }
+
+    .topbar{
+        align-items:flex-start;
+        gap:18px;
+        flex-direction:column;
+    }
+
+    .badge{
+        display:none;
+    }
+
+    .hero{
+        padding:48px 0 36px;
+    }
+
+    .lead{
         font-size:16px;
     }
 
-    .container{
-        padding-top:10px;
+    footer{
+        flex-direction:column;
     }
-
 }
-
 </style>
 </head>
 
 <body>
 
-<header>
+<div class="page">
 
-    <div class="logo">ESTUDIO JURÍDICO PREVISIONAL</div>
-
-    <h1>Braian A. Chaparro</h1>
-
-    <p class="subtitulo">
-        Herramientas profesionales para cálculos,
-         análisis y gestión técnica previsional.
-    </p>
-
-</header>
-
-<div class="container">
-
-    <a class="card" href="/calculadoraintereses/">
-
-        <div class="icon">📊</div>
-
-        <div class="titulo">
-            Calculadora de Intereses
+    <nav class="topbar">
+        <div class="brand">
+            <div class="brand-mark">EC</div>
+            <div class="brand-text">
+                <div class="brand-title">Estudio Chaparro</div>
+                <div class="brand-subtitle">Jurídico previsional</div>
+            </div>
         </div>
 
-        <div class="descripcion">
-            Actualización de liquidaciones. Imputación de pagos.
-        </div>
+        <div class="badge">Herramientas técnicas</div>
+    </nav>
 
-    </a>
+    <main>
+        <section class="hero">
+            <div class="kicker">Cálculo · análisis · gestión previsional</div>
 
-    <a class="card" href="/movilidadhaber/">
+            <h1>Braian A. Chaparro</h1>
 
-        <div class="icon">📈</div>
+            <p class="lead">
+                Plataforma profesional para actualización de liquidaciones,
+                movilidad de haberes y cálculos técnicos previsionales.
+            </p>
+        </section>
 
-        <div class="titulo">
-            Movilidad del Haber
-        </div>
+        <section class="tools">
 
-        <div class="descripcion">
-            Consulta y análisis de movilidad según los fallos "Cier Nilda" y "Gimenez Mirta" de la Cámara Federal de Mar del Plata.
-        </div>
+            <a class="card" href="/calculadoraintereses/">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 19V5"></path>
+                        <path d="M4 19h16"></path>
+                        <path d="M8 16v-5"></path>
+                        <path d="M12 16V8"></path>
+                        <path d="M16 16v-3"></path>
+                    </svg>
+                </div>
 
-    </a>
+                <h2>Calculadora de Intereses</h2>
 
-    <a class="card" href="/herramientas/">
+                <p>
+                    Actualización de liquidaciones, intereses compensatorios,
+                    moratorios e imputación de pagos.
+                </p>
 
-        <div class="icon">🧰</div>
+                <span class="card-link">Ingresar</span>
+            </a>
 
-        <div class="titulo">
-            Herramientas
-        </div>
+            <a class="card" href="/movilidadhaber/">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 18l6-6 4 4 6-8"></path>
+                        <path d="M14 8h6v6"></path>
+                    </svg>
+                </div>
 
-        <div class="descripcion">
-            Cómputo de servicios - Prorrateo - Proporcionalidad.
-        </div>
+                <h2>Movilidad del Haber</h2>
 
-    </a>
+                <p>
+                    Consulta y análisis de movilidad según criterios judiciales
+                    aplicables en materia previsional.
+                </p>
+
+                <span class="card-link">Ingresar</span>
+            </a>
+
+            <a class="card" href="/herramientas/">
+                <div class="icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14 7l3 3"></path>
+                        <path d="M5 19l8.5-8.5"></path>
+                        <path d="M15 5l4 4-2 2-4-4z"></path>
+                        <path d="M6 5h4"></path>
+                        <path d="M8 3v4"></path>
+                    </svg>
+                </div>
+
+                <h2>Herramientas</h2>
+
+                <p>
+                    Cómputo de servicios, prorrateo, proporcionalidad y soporte
+                    técnico para tareas previsionales.
+                </p>
+
+                <span class="card-link">Ingresar</span>
+            </a>
+
+        </section>
+    </main>
+
+    <footer>
+        <span>© 2026 Estudio Chaparro</span>
+        <span>Todos los derechos reservados</span>
+    </footer>
 
 </div>
-
-<footer>
-    © 2026 Estudio Chaparro · Todos los derechos reservados
-</footer>
 
 </body>
 </html>
