@@ -91,6 +91,31 @@
     box-shadow: 0 0 3px rgba(25,118,210,0.3);
   }
 
+  #camposMora {
+    display: none;
+  }
+
+  #camposMora.visible {
+    display: block;
+  }
+
+  .check-label {
+    flex: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 0 !important;
+    color: #333 !important;
+    font-weight: 500 !important;
+    cursor: pointer;
+  }
+
+  .check-label input {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+  }
+
   .form-actions {
     margin-top: 20px;
     display: flex;
@@ -209,8 +234,21 @@ width: 100%;
 </div>
 
   <div class="form-group">
+    <label class="check-label" for="calcularInteresesMora">
+      <input type="checkbox" id="calcularInteresesMora" onchange="toggleCamposMora()">
+      ¿Cálculos intereses moratorios?
+    </label>
+  </div>
+
+  <div id="camposMora">
+  <div class="form-group">
     <label for="fechaMora">Fecha de mora:</label>
     <input type="date" id="fechaMora">
+  </div>
+  <div class="form-group">
+    <label for="fechaFinalMora">Fecha final de mora:</label>
+    <input type="date" id="fechaFinalMora">
+  </div>
   </div>
 
   <div id="pagosContainer"></div>
@@ -218,7 +256,7 @@ width: 100%;
 <div class="form-actions">
     <button type="button" class="btn" onclick="calcular()">Calcular</button>
     <button type="button" class="btn" onclick="cerrar()">Limpiar</button>
-    <button type="button" class="btn" onclick="agregarPago()">Agregar pago</button>
+    <button type="button" class="btn" onclick="agregarPago()">Agregar pagos</button>
     <button type="button" class="btn" onclick="abrirSimpleCalc()">Cálculo simple</button>
     <button type="button" class="btn" onclick="imprimirTabla()">Imprimir</button>
 </div>
@@ -279,6 +317,18 @@ function fechaValida(fechaStr) {
     );
 }
 
+function toggleCamposMora() {
+    const calcularMora = document.getElementById('calcularInteresesMora').checked;
+    const contenedor = document.getElementById('camposMora');
+
+    contenedor.classList.toggle('visible', calcularMora);
+
+    if (!calcularMora) {
+        document.getElementById('fechaMora').value = '';
+        document.getElementById('fechaFinalMora').value = '';
+    }
+}
+
 function hoySinHora() {
     const h = new Date();
     h.setHours(0, 0, 0, 0);
@@ -319,7 +369,7 @@ async function getIndiceBCRA(fechaYMD) {
 
     return 0;
 }
-  
+
 async function findIndexBCRA(date) {
     const fechaStr = ymdLocal(date);
     return await getIndiceBCRA(fechaStr);
@@ -410,7 +460,9 @@ async function calcular() {
 
     const fechaActualStr = document.getElementById('fechaActual').value;
     const fechaCierreStr = document.getElementById('fechaCierre').value;
+    const calcularInteresesMora = document.getElementById('calcularInteresesMora').checked;
     const fechaMoraStr = document.getElementById('fechaMora').value;
+    const fechaFinalMoraStr = document.getElementById('fechaFinalMora').value;
 
     // Validar existencia real de fechas
     if (!fechaValida(fechaActualStr)) {
@@ -421,20 +473,29 @@ async function calcular() {
         alert("La Fecha de cierre ingresada no existe.");
         return;
     }
-    if (fechaMoraStr && !fechaValida(fechaMoraStr)) {
+    if (calcularInteresesMora && !fechaValida(fechaMoraStr)) {
         alert("La Fecha de mora ingresada no existe.");
+        return;
+    }
+    if (calcularInteresesMora && !fechaValida(fechaFinalMoraStr)) {
+        alert("La Fecha final de mora ingresada no existe.");
         return;
     }
 
     const fechaActual = parseLocalDate(fechaActualStr);
     const fechaCierre = parseLocalDate(fechaCierreStr);
-    const fechaMora = fechaMoraStr ? parseLocalDate(fechaMoraStr) : null;
+    const fechaMora = calcularInteresesMora ? parseLocalDate(fechaMoraStr) : null;
+    const fechaFinalMora = calcularInteresesMora ? parseLocalDate(fechaFinalMoraStr) : null;
 
     const hoy = hoySinHora();
 
     // Fecha actual no puede ser mayor a hoy
     if (fechaActual > hoy) {
         alert("La Fecha actual no puede ser posterior al día de hoy.");
+        return;
+    }
+    if (fechaFinalMora && fechaFinalMora > hoy) {
+        alert("La Fecha final de mora no puede ser posterior al día de hoy.");
         return;
     }
 
@@ -519,7 +580,7 @@ async function calcular() {
     document.getElementById('detalleMora').innerHTML = '';
     if (fechaMora) {
         let indiceInicialMora = await findIndexBCRA(new Date(fechaMora.getFullYear(), fechaMora.getMonth(), fechaMora.getDate() - 1));
-        let fechaHastaMora = pagos.length > 0 ? pagos[0].fecha : fechaActual;
+        let fechaHastaMora = fechaFinalMora;
         let indicePago1 = await findIndexBCRA(fechaHastaMora);
         let coefMora = coeficiente(indiceInicialMora, indicePago1);
         let capBase = capitalInicial;
@@ -586,6 +647,7 @@ function imprimirTabla() {
 
 function cerrar() {
     document.getElementById('calcForm').reset();
+    toggleCamposMora();
     document.getElementById('resultado').innerHTML = '';
     document.getElementById('detalleMora').innerHTML = '';
     document.getElementById('pagosContainer').innerHTML = '';
