@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#102a43">
-<title>Sistema BAC | Intereses y Retroactivos</title>
+<title>Sistema de liquidación previsional | Intereses y retroactivos</title>
 <style>
   body { font-family: "Segoe UI", Arial, sans-serif; margin: 30px; background-color: #fafafa; color: #333; }
 
@@ -611,20 +611,25 @@ width: 100%;
 
   .brand-mark {
     flex: 0 0 auto;
-    width: 72px;
+    width: 132px;
     height: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255,255,255,.42);
-    border-radius: 10px;
-    background: rgba(255,255,255,.08);
-    box-shadow: inset 0 0 0 4px rgba(255,255,255,.035);
-    color: #fff;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 19px;
-    font-weight: 700;
-    letter-spacing: .025em;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .brand-mark img {
+    display: block;
+    flex: 0 0 auto;
+    width: 220px;
+    max-width: none;
+    height: auto;
+    filter: brightness(0) invert(1);
   }
 
   .brand-mark-letter { line-height: 1; }
@@ -1215,7 +1220,8 @@ width: 100%;
   }
 
   @media (max-width: 500px) {
-    .brand-mark { width: 64px; height: 48px; }
+    .brand-mark { width: 112px; height: 48px; }
+    .brand-mark img { width: 190px; }
     .brand-subtitle { display: none; }
     .app-section { padding: 16px; border-radius: 12px; }
     .section-heading { margin-bottom: 16px; padding-bottom: 14px; }
@@ -1241,14 +1247,9 @@ width: 100%;
 <header class="system-header">
   <div class="system-header-inner">
     <div class="brand-lockup">
-      <div class="brand-mark" aria-label="BAC">
-        <span class="brand-mark-letter" aria-hidden="true">B</span>
-        <span class="brand-mark-a" aria-hidden="true"></span>
-        <span class="brand-mark-letter" aria-hidden="true">C</span>
-      </div>
+      <div class="brand-mark"><img src="logo-bac.png" alt="BAC"></div>
       <div>
-        <p class="brand-eyebrow">Herramientas de liquidación</p>
-        <h1>Sistema BAC</h1>
+        <h1>Sistema de liquidación previsional</h1>
         <p class="brand-subtitle">Intereses, actualización y retroactivos previsionales</p>
       </div>
     </div>
