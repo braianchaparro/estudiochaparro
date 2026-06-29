@@ -1241,6 +1241,321 @@ width: 100%;
     .section-heading { border-bottom: 2px solid #1d2f3f; }
   }
 </style>
+
+<style id="ampliatoriaStyles">
+  .app-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+  .ampliatoria-section .parameters-panel {
+    margin: 0 0 26px;
+    padding: 24px;
+    background: var(--paper);
+    border: 1px solid var(--slate-200);
+    border-top: 3px solid var(--ink-800);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .ampliatoria-section .parameters-title {
+    margin: 0 0 5px;
+    color: var(--ink-900);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .ampliatoria-section #estadoPasoRetro {
+    margin: 0 0 19px !important;
+    padding: 10px 12px;
+    border-left: 3px solid var(--blue-600);
+    border-radius: 5px;
+    background: var(--blue-50);
+    color: var(--slate-600) !important;
+    font-size: 12px;
+  }
+
+  .ampliatoria-section .retro-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    gap: 18px 22px;
+  }
+
+  .ampliatoria-section .retro-grid > label,
+  .ampliatoria-section .data-box-grid label,
+  .ampliatoria-section .cap-box-grid label,
+  .mobility-modal-card .form-col label {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 7px;
+    color: var(--slate-700);
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: .015em;
+  }
+
+  .ampliatoria-section .retro-grid input,
+  .ampliatoria-section .retro-grid select,
+  .mobility-modal-card .form-col input,
+  .mobility-modal-card .form-col select {
+    width: 100%;
+    min-height: 43px;
+    padding: 9px 11px;
+    border: 1px solid var(--slate-300);
+    border-radius: 7px;
+    background: #fff;
+    color: var(--slate-900);
+    font-size: 14px;
+  }
+
+  .ampliatoria-section .retro-grid input:focus,
+  .ampliatoria-section .retro-grid select:focus,
+  .mobility-modal-card .form-col input:focus,
+  .mobility-modal-card .form-col select:focus {
+    border-color: var(--blue-500);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(47, 125, 181, .13);
+  }
+
+  .ampliatoria-section .data-box,
+  .ampliatoria-section .cap-box {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 17px 18px;
+    border: 1px solid #cfdae2;
+    border-left: 4px solid var(--blue-600);
+    border-radius: 9px;
+    background: var(--blue-50);
+  }
+
+  .ampliatoria-section .data-box legend,
+  .ampliatoria-section .cap-box legend {
+    padding: 0 8px;
+    color: var(--ink-900);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .ampliatoria-section .data-box-grid,
+  .ampliatoria-section .cap-box-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+    gap: 14px 20px;
+    align-items: end;
+  }
+
+  .ampliatoria-section .cap-check {
+    min-height: 43px;
+    padding: 10px 12px;
+    border: 1px solid var(--slate-200);
+    border-radius: 7px;
+    background: #fff;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 9px !important;
+  }
+
+  .ampliatoria-section .cap-check input {
+    flex: 0 0 auto;
+    width: 17px !important;
+    min-height: 17px !important;
+    height: 17px;
+    accent-color: var(--blue-600);
+  }
+
+  .ampliatoria-section #indiceTopeContainer { display: none; }
+
+  .ampliatoria-section .parameters-actions {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--slate-100);
+  }
+
+  .ampliatoria-section button,
+  .mobility-modal-overlay button,
+  .retro-modal-overlay button {
+    min-height: 40px;
+    margin: 0;
+    padding: 9px 16px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: var(--ink-800);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(16, 42, 67, .15);
+  }
+
+  .ampliatoria-section button:hover,
+  .mobility-modal-overlay button:hover,
+  .retro-modal-overlay button:hover { background: var(--ink-900); }
+
+  #resultadoRetroNuevo { margin-top: 22px; overflow-x: auto; }
+  #resultadoRetroNuevo table { display: table; width: max-content; margin: 18px 0; font-size: 12px; }
+
+  .retro-report-nuevo {
+    padding: 22px;
+    border: 1px solid var(--slate-200);
+    border-top: 4px solid var(--ink-900);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .retro-report-nuevo h3 {
+    margin: 0 0 10px;
+    color: var(--ink-900);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 20px;
+  }
+
+  .retro-report-nuevo p { margin: 6px 0; color: var(--slate-700); }
+  .retro-loading, #estadoMovilidad { color: var(--blue-600) !important; }
+
+  .mobility-modal-overlay,
+  .retro-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(7, 24, 39, .72);
+    backdrop-filter: blur(5px);
+  }
+
+  .mobility-modal-card,
+  .retro-modal {
+    border: 1px solid rgba(255, 255, 255, .3);
+    border-top: 4px solid var(--gold);
+    border-radius: 13px;
+    background: #fff;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, .36);
+  }
+
+  .mobility-modal-card {
+    width: min(960px, 100%);
+    max-height: calc(100vh - 40px);
+    overflow: auto;
+    margin: 0;
+    padding: 24px 26px;
+  }
+
+  .mobility-modal-card h2,
+  .retro-modal-head h3 {
+    margin: 0 0 18px;
+    color: var(--ink-900);
+    font-family: Georgia, "Times New Roman", serif;
+    text-align: left;
+  }
+
+  .mobility-modal-card .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 24px;
+    margin-bottom: 18px;
+  }
+
+  .mobility-modal-card .form-col { display: flex; flex-direction: column; gap: 10px; }
+  .mobility-modal-card #tabla { display: none; }
+
+  .mobility-modal-card .options,
+  .retro-reference-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0;
+    padding: 10px;
+    border: 1px solid var(--slate-200);
+    border-radius: 8px;
+    background: var(--blue-50);
+  }
+
+  .mobility-modal-card .options label,
+  .retro-reference-options label {
+    padding: 7px 9px;
+    border-radius: 6px;
+    background: #fff;
+    color: var(--slate-700);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .info-tooltip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+    margin: 0 4px;
+    border: 1px solid #aebfcb;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--blue-600);
+    font-size: 11px;
+    font-weight: 800;
+    cursor: help;
+  }
+
+  .info-tooltip::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    width: 285px;
+    padding: 9px 11px;
+    transform: translateY(-50%);
+    border-radius: 7px;
+    background: var(--ink-950);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.35;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  .info-tooltip:hover::after { opacity: 1; }
+
+  .retro-modal {
+    width: min(680px, 100%);
+    max-height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 22px 24px;
+  }
+
+  .retro-modal-head { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+  .retro-close { width: 32px; height: 32px; padding: 0 !important; border-radius: 50% !important; background: var(--slate-100) !important; color: var(--slate-700) !important; box-shadow: none !important; }
+  .retro-modal-table { flex: 1 1 auto; min-height: 140px; overflow: auto; }
+  .retro-modal-table table { display: table; width: 100%; margin: 10px 0; }
+  .retro-modal-table th { position: sticky; top: 0; z-index: 1; }
+  .retro-modal-actions { flex: 0 0 auto; padding-top: 12px; border-top: 1px solid var(--slate-200); }
+  .percibido-input { width: 175px; text-align: right; }
+  .percibido-input:disabled { background: var(--slate-100); color: var(--slate-700); }
+
+  @media (max-width: 800px) {
+    .app-nav { grid-template-columns: 1fr; }
+    .ampliatoria-section .retro-grid,
+    .ampliatoria-section .data-box-grid,
+    .ampliatoria-section .cap-box-grid,
+    .mobility-modal-card .form-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 500px) {
+    .ampliatoria-section .parameters-panel { padding: 17px; }
+    .ampliatoria-section .parameters-actions { align-items: stretch; }
+    .ampliatoria-section .parameters-actions button { width: 100%; }
+  }
+</style>
 </head>
 <body>
 
@@ -1263,6 +1578,7 @@ width: 100%;
   <button type="button" class="btn active" data-target="pantallaIntereses" onclick="mostrarCalculadora('pantallaIntereses', this)">Calculadora de Intereses</button>
   <button type="button" class="btn" data-target="pantallaRetroActual" onclick="mostrarCalculadora('pantallaRetroActual', this)">Calcular retroactivo a valores actuales</button>
   <button type="button" class="btn" data-target="pantallaRetroInteres" onclick="mostrarCalculadora('pantallaRetroInteres', this)">Calcular retroactivo con tasa de interés</button>
+  <button type="button" class="btn" data-target="pantallaAmpliatoria" onclick="mostrarCalculadora('pantallaAmpliatoria', this)">Calcular liquidación ampliatoria</button>
 </nav>
 
 <section id="pantallaIntereses" class="app-section active">
@@ -1507,6 +1823,132 @@ width: 100%;
 
   <div id="cargaRetroTasa"></div>
   <div id="resultadoRetroTasa"></div>
+</section>
+
+<div id="modalMovilidad" class="mobility-modal-overlay" style="display:none;">
+<div class="card mobility-modal-card">
+
+<h2>Calcular movilidad</h2>
+<style>
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* dos columnas iguales */
+    gap: 20px; /* separación entre columnas */
+    max-width: 1000px;
+    margin-bottom: 15px;
+  }
+  .form-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+</style>
+
+<div class="form-grid">
+  <!-- Columna izquierda -->
+  <div class="form-col">
+
+<label id="campoPbu"><span id="textoPbu">PBU:</span> <input type="number" id="pbu" step="0.01" value="0"></label>
+<label id="campoPc">PC: <input type="number" id="pc" step="0.01" value="0"></label>
+<label id="campoPap">PAP: <input type="number" id="pap" step="0.01" value="0"></label>
+<label>MM/AAAA:
+  <span class="info-tooltip" data-text="Indicar el mensual de la fecha de cierre de la liquidación aprobada correspondiente al haber reajustado informado.">?</span>
+  <input type="text" id="fad" maxlength="7" inputmode="numeric" placeholder="MM/AAAA" oninput="formatearMesMovilidad(this)">
+</label>
+
+<label>Índice:
+<select id="indice">
+<option value="ley">Aumentos de ley</option>
+<option value="cier">Aum. Grales. + fallo "Cier" + fallo "Gimenez" + Aum. Grales.</option>
+<option value="ripte">Aum. Grales. + fallo "Cier" + fallo "Gimenez" + RIPTE</option>
+</select>
+</label>
+
+  </div>
+
+  <!-- Columna derecha -->
+  <div class="form-col">
+    <label><input type="checkbox" id="pension" onchange="togglePension()"> Pensión</label>
+    <label>Fallecimiento: <input type="date" id="fallecimiento" disabled></label>
+    <label>Porcentaje:
+      <select id="porcentaje" disabled>
+        <option value="0.7">70%</option>
+        <option value="0.75">75%</option>
+      </select>
+      </label>
+    </div>
+</div>
+
+
+<div class="options">
+  <label><input type="radio" name="modo" value="pbupcpap" checked onchange="toggleModoHaber()"> PBU + PC + PAP</label>
+  <label><input type="radio" name="modo" value="haberunico" onchange="toggleModoHaber()"> Haber único</label>
+</div>
+
+<p style="font-weight:600;color:#475569;">Cargar haber reajustado según liquidación aprobada.</p>
+
+<button onclick="calcularMovilidadBAC()">Calcular movilidad</button>
+<button onclick="limpiar()">Limpiar</button>
+<button id="salirMovilidad" onclick="salirYContinuarMovilidad()" style="display:none;">Salir y continuar</button>
+
+  
+  <table id="tabla">
+    <thead></thead>
+    <tbody></tbody>
+  </table>
+  <div id="estadoMovilidad" style="margin-top:15px;font-weight:600;color:#1d4ed8;"></div>
+
+
+
+</div>
+</div>
+
+<section id="pantallaAmpliatoria" class="app-section ampliatoria-section">
+  <div class="section-heading">
+    <div>
+      <span class="section-kicker">Liquidación ampliatoria</span>
+      <h2>Calcular nuevos períodos y retroactividades</h2>
+      <p class="section-description">Movilice el haber reajustado, determine las diferencias mensuales y calcule los intereses de cada período.</p>
+    </div>
+  </div>
+  <div class="parameters-panel">
+  <h3 class="parameters-title">Parámetros de liquidación</h3>
+  <p id="estadoPasoRetro" style="color:#64748b;">Primero debe calcular la movilidad del haber reajustado para habilitar el cálculo del retroactivo.</p>
+  <div class="retro-grid">
+    <fieldset class="data-box">
+      <legend>Datos</legend>
+      <div class="data-box-grid">
+        <label>Beneficiario: <input type="text" id="beneficiarioNuevo" placeholder="Nombre y apellido"></label>
+        <label>Beneficio: <input type="text" id="beneficioNuevo" placeholder="Número de beneficio"></label>
+      </div>
+    </fieldset>
+    <label>Fecha inicial (FIP): <input type="text" id="fipNuevo" maxlength="10" inputmode="numeric" placeholder="DD/MM/AAAA" oninput="formatearFechaNueva(this)"></label>
+    <label>Fecha de cierre: <input type="text" id="cierreNuevo" maxlength="10" inputmode="numeric" placeholder="DD/MM/AAAA" oninput="sincronizarCierreNuevo(this)"></label>
+    <label>Fecha de interés: <input type="text" id="interesNuevo" maxlength="10" inputmode="numeric" placeholder="DD/MM/AAAA" oninput="editarInteresNuevo(this)"></label>
+    <label>Obra social: <select id="osNuevo"><option value="3">3 %</option><option value="6" selected>6 %</option></select></label>
+    <label>Tasa de interés: <select id="tasaNueva"><option value="43" selected>Tasa Pasiva Promedio (BCRA)</option><option value="1197">Tasa de Interés Moratorio (BCRA)</option></select></label>
+    <fieldset class="cap-box">
+      <legend>Tope máximo</legend>
+      <div class="cap-box-grid">
+        <label>Aplicación: <select id="topeNuevo"><option value="condicional" selected>Condicional</option><option value="elimina">Elimina</option><option value="aplica">Aplica</option></select></label>
+        <label class="cap-check"><input type="checkbox" id="movilizarTopeNuevo" onchange="toggleMovilizarTopeNuevo()"> ¿Movilizar tope máximo?</label>
+        <label id="indiceTopeContainer">Índice del tope:
+          <select id="indiceTopeNuevo">
+            <option value="ley" selected>Badaro + Aumentos de ley</option>
+            <option value="cier">Badaro + Aum. Grales. + fallo "Cier" + fallo "Gimenez" + Aum. Grales.</option>
+            <option value="ripte">Badaro + Aum. Grales. + fallo "Cier" + fallo "Gimenez" + RIPTE</option>
+          </select>
+        </label>
+      </div>
+    </fieldset>
+  </div>
+  <div class="parameters-actions">
+    <button type="button" onclick="abrirMovilidadNueva()">Calcular movilidad</button>
+    <button type="button" id="btnCalcularRetroNuevo" onclick="abrirPercibidosNuevos()" style="display:none;">Calcular retroactivo</button>
+  </div>
+  </div>
+  <div id="modalPercibidosNuevo"></div>
+  <div id="resultadoRetroNuevo"></div>
 </section>
 
 <footer class="system-footer">
@@ -2905,5 +3347,1042 @@ function cerrar() {
 }
 </script>
 
+<script>
+
+  const haberesReajustadosMovilidad = {};
+  let movilidadCalculada = false;
+  const formatoPesos = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 2 });
+
+
+const sumasFijas = {
+"2020-03":1500,
+"2020-04":1500,
+"2020-05":1500,
+"2020-06":1591.80,
+"2020-07":1591.80,
+"2020-08":1591.80,
+"2020-09":1711.19,
+"2020-10":1711.19,
+"2020-11":1711.19,
+"2020-12":1796.74,
+"2021-01":1796.74,
+"2021-02":1796.74
+};
+
+
+  const datos = [
+{"periodo":"mar-09","inc":1.1169},
+{"periodo":"abr-09","inc":1.0000},
+{"periodo":"may-09","inc":1.0000},
+{"periodo":"jun-09","inc":1.0000},
+{"periodo":"jul-09","inc":1.0000},
+{"periodo":"ago-09","inc":1.0000},
+{"periodo":"sept-09","inc":1.0734},
+{"periodo":"oct-09","inc":1.0000},
+{"periodo":"nov-09","inc":1.0000},
+{"periodo":"dic-09","inc":1.0000},
+
+{"periodo":"ene-10","inc":1.0000},
+{"periodo":"feb-10","inc":1.0000},
+{"periodo":"mar-10","inc":1.0821},
+{"periodo":"abr-10","inc":1.0000},
+{"periodo":"may-10","inc":1.0000},
+{"periodo":"jun-10","inc":1.0000},
+{"periodo":"jul-10","inc":1.0000},
+{"periodo":"ago-10","inc":1.0000},
+{"periodo":"sept-10","inc":1.1690},
+{"periodo":"oct-10","inc":1.0000},
+{"periodo":"nov-10","inc":1.0000},
+{"periodo":"dic-10","inc":1.0000},
+
+{"periodo":"ene-11","inc":1.0000},
+{"periodo":"feb-11","inc":1.0000},
+{"periodo":"mar-11","inc":1.1733},
+{"periodo":"abr-11","inc":1.0000},
+{"periodo":"may-11","inc":1.0000},
+{"periodo":"jun-11","inc":1.0000},
+{"periodo":"jul-11","inc":1.0000},
+{"periodo":"ago-11","inc":1.0000},
+{"periodo":"sept-11","inc":1.1682},
+{"periodo":"oct-11","inc":1.0000},
+{"periodo":"nov-11","inc":1.0000},
+{"periodo":"dic-11","inc":1.0000},
+
+{"periodo":"ene-12","inc":1.0000},
+{"periodo":"feb-12","inc":1.0000},
+{"periodo":"mar-12","inc":1.1762},
+{"periodo":"abr-12","inc":1.0000},
+{"periodo":"may-12","inc":1.0000},
+{"periodo":"jun-12","inc":1.0000},
+{"periodo":"jul-12","inc":1.0000},
+{"periodo":"ago-12","inc":1.0000},
+{"periodo":"sept-12","inc":1.1142},
+{"periodo":"oct-12","inc":1.0000},
+{"periodo":"nov-12","inc":1.0000},
+{"periodo":"dic-12","inc":1.0000},
+
+{"periodo":"ene-13","inc":1.0000},
+{"periodo":"feb-13","inc":1.0000},
+{"periodo":"mar-13","inc":1.1518},
+{"periodo":"abr-13","inc":1.0000},
+{"periodo":"may-13","inc":1.0000},
+{"periodo":"jun-13","inc":1.0000},
+{"periodo":"jul-13","inc":1.0000},
+{"periodo":"ago-13","inc":1.0000},
+{"periodo":"sept-13","inc":1.1441},
+{"periodo":"oct-13","inc":1.0000},
+{"periodo":"nov-13","inc":1.0000},
+{"periodo":"dic-13","inc":1.0000},
+
+{"periodo":"ene-14","inc":1.0000},
+{"periodo":"feb-14","inc":1.0000},
+{"periodo":"mar-14","inc":1.1131},
+{"periodo":"abr-14","inc":1.0000},
+{"periodo":"may-14","inc":1.0000},
+{"periodo":"jun-14","inc":1.0000},
+{"periodo":"jul-14","inc":1.0000},
+{"periodo":"ago-14","inc":1.0000},
+{"periodo":"sept-14","inc":1.1721},
+{"periodo":"oct-14","inc":1.0000},
+{"periodo":"nov-14","inc":1.0000},
+{"periodo":"dic-14","inc":1.0000},
+
+{"periodo":"ene-15","inc":1.0000},
+{"periodo":"feb-15","inc":1.0000},
+{"periodo":"mar-15","inc":1.1826},
+{"periodo":"abr-15","inc":1.0000},
+{"periodo":"may-15","inc":1.0000},
+{"periodo":"jun-15","inc":1.0000},
+{"periodo":"jul-15","inc":1.0000},
+{"periodo":"ago-15","inc":1.0000},
+{"periodo":"sept-15","inc":1.1249},
+{"periodo":"oct-15","inc":1.0000},
+{"periodo":"nov-15","inc":1.0000},
+{"periodo":"dic-15","inc":1.0000},
+
+{"periodo":"ene-16","inc":1.0000},
+{"periodo":"feb-16","inc":1.0000},
+{"periodo":"mar-16","inc":1.1535},
+{"periodo":"abr-16","inc":1.0000},
+{"periodo":"may-16","inc":1.0000},
+{"periodo":"jun-16","inc":1.0000},
+{"periodo":"jul-16","inc":1.0000},
+{"periodo":"ago-16","inc":1.0000},
+{"periodo":"sept-16","inc":1.1416},
+{"periodo":"oct-16","inc":1.0000},
+{"periodo":"nov-16","inc":1.0000},
+{"periodo":"dic-16","inc":1.0000},
+
+{"periodo":"ene-17","inc":1.0000},
+{"periodo":"feb-17","inc":1.0000},
+{"periodo":"mar-17","inc":1.1296},
+{"periodo":"abr-17","inc":1.0000},
+{"periodo":"may-17","inc":1.0000},
+{"periodo":"jun-17","inc":1.0000},
+{"periodo":"jul-17","inc":1.0000},
+{"periodo":"ago-17","inc":1.0000},
+{"periodo":"sept-17","inc":1.1332},
+{"periodo":"oct-17","inc":1.0000},
+{"periodo":"nov-17","inc":1.0000},
+{"periodo":"dic-17","inc":1.0000},
+
+{"periodo":"ene-18","inc":1.0000},
+{"periodo":"feb-18","inc":1.0000},
+{"periodo":"mar-18","inc":1.0571},
+{"periodo":"abr-18","inc":1.0000},
+{"periodo":"may-18","inc":1.0000},
+{"periodo":"jun-18","inc":1.0569},
+{"periodo":"jul-18","inc":1.0000},
+{"periodo":"ago-18","inc":1.0000},
+{"periodo":"sept-18","inc":1.0668},
+{"periodo":"oct-18","inc":1.0000},
+{"periodo":"nov-18","inc":1.0000},
+{"periodo":"dic-18","inc":1.0778},
+
+{"periodo":"ene-19","inc":1.0000},
+{"periodo":"feb-19","inc":1.0000},
+{"periodo":"mar-19","inc":1.1183},
+{"periodo":"abr-19","inc":1.0000},
+{"periodo":"may-19","inc":1.0000},
+{"periodo":"jun-19","inc":1.1074},
+{"periodo":"jul-19","inc":1.0000},
+{"periodo":"ago-19","inc":1.0000},
+{"periodo":"sept-19","inc":1.1222},
+{"periodo":"oct-19","inc":1.0000},
+{"periodo":"nov-19","inc":1.0000},
+{"periodo":"dic-19","inc":1.0874},
+
+{"periodo":"ene-20","inc":1.0000},
+{"periodo":"feb-20","inc":1.0000},
+{"periodo":"mar-20","inc":1.0230},
+{"periodo":"abr-20","inc":1.0000},
+{"periodo":"may-20","inc":1.0000},
+{"periodo":"jun-20","inc":1.0612},
+{"periodo":"jul-20","inc":1.0000},
+{"periodo":"ago-20","inc":1.0000},
+{"periodo":"sept-20","inc":1.0750},
+{"periodo":"oct-20","inc":1.0000},
+{"periodo":"nov-20","inc":1.0000},
+{"periodo":"dic-20","inc":1.0500},
+
+{"periodo":"ene-21","inc":1.0000},
+{"periodo":"feb-21","inc":1.0000},
+{"periodo":"mar-21","inc":1.0807},
+{"periodo":"abr-21","inc":1.0000},
+{"periodo":"may-21","inc":1.0000},
+{"periodo":"jun-21","inc":1.1212},
+{"periodo":"jul-21","inc":1.0000},
+{"periodo":"ago-21","inc":1.0000},
+{"periodo":"sept-21","inc":1.1239},
+{"periodo":"oct-21","inc":1.0000},
+{"periodo":"nov-21","inc":1.0000},
+{"periodo":"dic-21","inc":1.1211},
+
+{"periodo":"ene-22","inc":1.0000},
+{"periodo":"feb-22","inc":1.0000},
+{"periodo":"mar-22","inc":1.1228},
+{"periodo":"abr-22","inc":1.0000},
+{"periodo":"may-22","inc":1.0000},
+{"periodo":"jun-22","inc":1.1500},
+{"periodo":"jul-22","inc":1.0000},
+{"periodo":"ago-22","inc":1.0000},
+{"periodo":"sept-22","inc":1.1553},
+{"periodo":"oct-22","inc":1.0000},
+{"periodo":"nov-22","inc":1.0000},
+{"periodo":"dic-22","inc":1.1562},
+
+{"periodo":"ene-23","inc":1.0000},
+{"periodo":"feb-23","inc":1.0000},
+{"periodo":"mar-23","inc":1.1704},
+{"periodo":"abr-23","inc":1.0000},
+{"periodo":"may-23","inc":1.0000},
+{"periodo":"jun-23","inc":1.2092},
+{"periodo":"jul-23","inc":1.0000},
+{"periodo":"ago-23","inc":1.0000},
+{"periodo":"sept-23","inc":1.2329},
+{"periodo":"oct-23","inc":1.0000},
+{"periodo":"nov-23","inc":1.0000},
+{"periodo":"dic-23","inc":1.2087},
+
+{"periodo":"ene-24","inc":1.0000},
+{"periodo":"feb-24","inc":1.0000},
+{"periodo":"mar-24","inc":1.2718},
+{"periodo":"abr-24","inc":1.2740},
+{"periodo":"may-24","inc":1.1101},
+{"periodo":"jun-24","inc":1.0883},
+{"periodo":"jul-24","inc":1.0418},
+{"periodo":"ago-24","inc":1.0458},
+{"periodo":"sept-24","inc":1.0403},
+{"periodo":"oct-24","inc":1.0417},
+{"periodo":"nov-24","inc":1.0347},
+{"periodo":"dic-24","inc":1.0269},
+
+{"periodo":"ene-25","inc":1.0243},
+{"periodo":"feb-25","inc":1.0270},
+{"periodo":"mar-25","inc":1.0221},
+{"periodo":"abr-25","inc":1.0240},
+{"periodo":"may-25","inc":1.0373},
+{"periodo":"jun-25","inc":1.0278},
+{"periodo":"jul-25","inc":1.0150},
+{"periodo":"ago-25","inc":1.0162},
+{"periodo":"sept-25","inc":1.0190},
+{"periodo":"oct-25","inc":1.0188},
+{"periodo":"nov-25","inc":1.0208},
+{"periodo":"dic-25","inc":1.0234},
+
+{"periodo":"ene-26","inc":1.0247},
+{"periodo":"feb-26","inc":1.0285},
+{"periodo":"mar-26","inc":1.0288},
+{"periodo":"abr-26","inc":1.0290},
+{"periodo":"may-26","inc":1.0338},
+{"periodo":"jun-26","inc":1.0258}
+];
+
+	
+// Nuevos coeficientes RIPTE
+// Índices alternativos
+const coefCier = {
+"mar-20":1.1156,
+"jun-20":1.1090,
+"sept-20":1.0988,
+"dic-20":1.0455,
+"mar-21":1.1133,
+"jun-21":1.1295,
+"jun-22":1.1607,
+"sept-22":1.1730,
+"dic-22":1.2198,
+"mar-23":1.1729,
+"jun-23":1.2173,
+"sept-23":1.2378,
+"dic-23":1.3466,
+"mar-24":1.5329,
+"abr-24":1.0000,
+"may-24":1.0000,
+"jun-24":1.6500
+};
+
+const ripteCoef = {
+"mar-20":1.1156,
+"jun-20":1.1090,
+"sept-20":1.0988,
+"dic-20":1.0455,
+"mar-21":1.1133,
+"jun-21":1.1295,
+"jun-22":1.1607,
+"sept-22":1.1730,
+"dic-22":1.2198,
+"mar-23":1.1729,
+"jun-23":1.2173,
+"sept-23":1.2378,
+"dic-23":1.3466,
+"mar-24":1.5329,
+"abr-24":1.0000,
+"may-24":1.0000,
+"jun-24":1.760300,
+"jul-24":1.073000,
+"ago-24":1.061000,
+"sept-24":1.066000,
+"oct-24":1.041700,
+"nov-24":1.041000,
+"dic-24":1.066000,
+"ene-25":1.028000,
+"feb-25":1.027000,
+"mar-25":1.026000,
+"abr-25":1.061000,
+"may-25":1.041000,
+"jun-25":1.029000,
+"jul-25":1.019000,
+"ago-25":1.028000,
+"sept-25":1.029000,
+"oct-25":1.0188,
+"nov-25":1.0208,
+"dic-25":1.027000,
+"ene-26":1.0247,
+"feb-26":1.0285,
+"mar-26":1.0288,
+"abr-26":1.0530,
+"may-26":1.0338,
+"jun-26":1.0258
+};
+
+
+function periodoAFecha(p) {
+    const [mesRaw, anioRaw] = p.split("-");
+    const m = mesRaw.toLowerCase();
+    const map = {ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,sep:9,sept:9,oct:10,nov:11,dic:12};
+    const clave = m.startsWith('sept') ? 'sept' : m.substring(0,3);
+    const mes = map[clave];
+    const anio = 2000 + parseInt(anioRaw,10);
+    return new Date(anio, mes-1, 1);
+  }
+
+  function mismaYM(a, b) {
+    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
+  }
+
+  function formatearMesMovilidad(input) {
+    const numeros = input.value.replace(/\D/g, '').slice(0, 6);
+    input.value = numeros.length <= 2 ? numeros : numeros.slice(0, 2) + '/' + numeros.slice(2);
+  }
+
+  function parseMesMovilidad(valor) {
+    const coincidencia = /^(\d{2})\/(\d{4})$/.exec((valor || '').trim());
+    if (!coincidencia) return null;
+    const mes = Number(coincidencia[1]);
+    const anio = Number(coincidencia[2]);
+    if (mes < 1 || mes > 12) return null;
+    return new Date(anio, mes - 1, 1, 12);
+  }
+
+  function togglePension() {
+    const chk = document.getElementById("pension").checked;
+    document.getElementById("fallecimiento").disabled = !chk;
+    document.getElementById("porcentaje").disabled = !chk;
+  }
+
+  function toggleModoHaber() {
+    const esHaberUnico = document.querySelector('input[name="modo"]:checked').value === 'haberunico';
+    document.getElementById('textoPbu').textContent = esHaberUnico ? 'Haber Total:' : 'PBU:';
+    document.getElementById('campoPc').style.display = esHaberUnico ? 'none' : '';
+    document.getElementById('campoPap').style.display = esHaberUnico ? 'none' : '';
+    if (esHaberUnico) {
+      document.getElementById('pc').value = 0;
+      document.getElementById('pap').value = 0;
+    }
+  }
+
+  function calcularMovilidadBAC() {
+    const pbuIni = parseFloat(document.getElementById("pbu").value) || 0;
+    const pcIni  = parseFloat(document.getElementById("pc").value) || 0;
+    const papIni = parseFloat(document.getElementById("pap").value) || 0;
+    const fadVal = document.getElementById("fad").value;
+    const fadYM = parseMesMovilidad(fadVal);
+    if (!fadYM) { alert("Ingresá el mensual en formato MM/AAAA."); return; }
+
+
+    // Pensión
+    const esPension = document.getElementById("pension").checked;
+    let fallecimientoFecha = null;
+    let fallecimientoYM = null;
+    let porc = 1;
+    if (esPension) {
+      const falleVal = document.getElementById("fallecimiento").value;
+      if (!falleVal) { alert("Ingresá la fecha de fallecimiento."); return; }
+      // Parseo seguro local (evita retroceder un día por huso horario)
+      const [fy, fm, fd] = falleVal.split('-').map(Number);
+      // Aplicar porcentaje en el mismo mes del fallecimiento
+      fallecimientoYM = new Date(fy, fm - 1, 1);
+      porc = parseFloat(document.getElementById("porcentaje").value);
+    }
+
+    // Buscar índice del periodo que coincide con la FAD
+const idxFad = datos.findIndex(d => mismaYM(periodoAFecha(d.periodo), fadYM));
+
+if (idxFad === -1) {
+  const limite = new Date(2009, 2, 1); // marzo 2009 (mes 2 porque arranca en 0)
+  if (fadYM < limite) {
+    alert('Este programa es válido para FAD posteriores al 01/03/2009.\n\nEn caso de ser anterior, puede ingresar el haber movilizado al 02/2020 (para aplicar el fallo "Cier" y "Gimenez") o al 02/2021 (para aplicar el fallo "Gimenez").');
+  } else {
+    alert("La FAD no coincide con ningún periodo en la tabla.");
+  }
+  return;
+}
+
+    const modo = document.querySelector('input[name="modo"]:checked').value;
+    const thead = document.querySelector("#tabla thead");
+    const tbody = document.querySelector("#tabla tbody");
+    tbody.innerHTML = "";
+    thead.innerHTML = "";
+
+const indice = document.getElementById("indice").value;
+Object.keys(haberesReajustadosMovilidad).forEach(clave => delete haberesReajustadosMovilidad[clave]);
+movilidadCalculada = false;
+const fechaCierreMovilidad = parseFechaNueva(document.getElementById('cierreNuevo').value);
+if (!fechaCierreMovilidad) { alert('Ingrese primero una Fecha de cierre válida en el formulario principal.'); return; }
+const cierreMovilidadYM = new Date(fechaCierreMovilidad.getFullYear(), fechaCierreMovilidad.getMonth(), 1, 12);
+if (fadYM > cierreMovilidadYM) { alert('La FAD no puede ser posterior a la Fecha de cierre.'); return; }
+
+    if (modo === "pbupcpap") {
+
+
+thead.innerHTML = `
+<tr>
+<th>Periodo</th>
+<th>Inc.</th>
+<th>PBU</th>
+<th>PC</th>
+<th>PAP</th>
+${indice === "ley" ? "<th>Suma fija</th>" : ""}
+<th>Total</th>
+</tr>
+`;
+
+} else {
+      thead.innerHTML = `
+        <tr>
+          <th>Periodo</th>
+          <th>Inc.</th>
+          <th>Haber Mensual</th>
+        </tr>
+      `;
+    }
+
+    document.querySelector("#tabla").style.display = "table";
+
+    let pbu = 0, pc = 0, pap = 0;
+let acumuladoSumaFija = 0;
+
+for (let i = idxFad; i < datos.length; i++) {
+const d = datos[i];
+
+let inc = d.inc;
+const indice = document.getElementById("indice").value;
+
+if(indice === "cier" && coefCier[d.periodo]){
+  inc = coefCier[d.periodo];
+}
+
+if(indice === "ripte" && ripteCoef[d.periodo]){
+  inc = ripteCoef[d.periodo];
+}
+
+  const periodoFecha = periodoAFecha(d.periodo);
+  if (periodoFecha > cierreMovilidadYM) break;
+
+
+let sumaFijaMes = 0;
+let sumaFijaMesAnterior = 0;
+
+if(indice === "ley"){
+const claveMes =
+periodoFecha.getFullYear() + "-" +
+String(periodoFecha.getMonth()+1).padStart(2,"0");
+
+if(sumasFijas[claveMes]){
+sumaFijaMes = sumasFijas[claveMes];
+}
+
+const fechaAnterior = new Date(periodoFecha);
+fechaAnterior.setMonth(fechaAnterior.getMonth()-1);
+
+const claveAnterior =
+fechaAnterior.getFullYear() + "-" +
+String(fechaAnterior.getMonth()+1).padStart(2,"0");
+
+if(sumasFijas[claveAnterior]){
+sumaFijaMesAnterior = sumasFijas[claveAnterior];
+}
+}
+
+  // Forzar el primer coeficiente a 1.0000
+  const incMostrar = (i === idxFad) ? 1.0000 : inc;
+
+  if (i === idxFad) {
+    // Mes de FAD: asignar valores originales
+    pbu = pbuIni;
+    pc  = pcIni;
+    pap = papIni;
+  } else {
+    // Mes siguiente en adelante: multiplicar por inc del MES ACTUAL
+    if(!(indice === "ley" && d.periodo === "mar-21")){
+	pbu = pbu * inc;
+	pc  = pc * inc;
+	pap = pap * inc;
+	}
+  }
+
+
+if(indice === "ley" && d.periodo === "mar-21"){
+
+// Haber de febrero incluyendo la suma fija vigente
+let haberFeb = pbu + pc + pap + sumaFijaMesAnterior;
+
+// Aplicar aumento de marzo
+let haberMar = haberFeb * inc;
+
+// Repartir proporcionalmente entre PBU PC PAP
+let base = pbu + pc + pap;
+
+if(base > 0){
+
+let pctPBU = pbu / base;
+let pctPC  = pc  / base;
+let pctPAP = pap / base;
+
+pbu = haberMar * pctPBU;
+pc  = haberMar * pctPC;
+pap = haberMar * pctPAP;
+
+}else{
+
+// Haber único
+pbu = 0;
+pc  = haberMar;
+pap = 0;
+
+}
+
+}
+
+      // Si es el mes del fallecimiento → aplicar porcentaje
+      if (esPension && mismaYM(periodoFecha, fallecimientoYM)) {
+        pbu = pbu * porc;
+        pc  = pc * porc;
+        pap = pap * porc;
+      }
+
+      const total = pbu + pc + pap + sumaFijaMes;
+      const claveReajustado = String(periodoFecha.getMonth() + 1).padStart(2, "0") + "/" + periodoFecha.getFullYear();
+      haberesReajustadosMovilidad[claveReajustado] = total;
+
+if (modo === "pbupcpap") {
+
+tbody.innerHTML += `
+<tr>
+<td>${d.periodo}</td>
+<td>${incMostrar.toFixed(4)}</td>
+<td>${formatoPesos.format(pbu)}</td>
+<td>${formatoPesos.format(pc)}</td>
+<td>${formatoPesos.format(pap)}</td>
+${indice === "ley" ? `<td>${formatoPesos.format(sumaFijaMes)}</td>` : ""}
+<td>${formatoPesos.format(total)}</td>
+</tr>
+`;
+
+} else {
+        tbody.innerHTML += `
+          <tr>
+            <td>${d.periodo}</td>
+            <td>${incMostrar.toFixed(4)}</td>
+            <td>${formatoPesos.format(total)}</td>
+          </tr>
+        `;
+      }
+    }
+    movilidadCalculada = true;
+    actualizarEstadoMovilidad();
+    document.getElementById('salirMovilidad').style.display = 'inline-block';
+  }
+
+function estilosImpresionBACNuevos() {
+  return `
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:#fff;color:#1e2933;font-family:"Segoe UI",Arial,sans-serif;font-size:11px;line-height:1.4;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+    h1,h2,h3{color:#102a43;font-family:Georgia,"Times New Roman",serif}
+    h1{font-size:25px}h2{font-size:19px}h3{font-size:15px}
+    h4{margin:6px 0 16px;color:#5d6f7c;font-size:11px;font-weight:500;line-height:1.45}
+    table{display:table!important;width:auto;margin:18px 0;border-collapse:collapse;background:#fff;border:1px solid #dfe6eb;font-size:9.5px;font-variant-numeric:tabular-nums}
+    th,td{padding:6px 7px;text-align:right;white-space:nowrap;border-bottom:1px solid #dfe6eb}
+    th{background:#102a43!important;color:#fff!important;font-size:8.5px;font-weight:700;letter-spacing:.03em;text-align:center;text-transform:uppercase}
+    tbody tr:nth-child(even){background:#f8fafb!important}tbody tr:nth-child(odd){background:#fff!important}
+    tfoot th{background:#173f5f!important}
+    .mobility-print-report,.retro-report-nuevo{display:block;width:100%;padding:16px 18px;border:1px solid #dfe6eb;border-top:4px solid #102a43;border-radius:0;background:#fff}
+    .mobility-print-report h2,.retro-report-nuevo h3{margin:0 0 9px;color:#102a43;text-align:left}
+    .mobility-print-report p,.retro-report-nuevo p{margin:5px 0;color:#465866}
+    .beneficiary-print-grid{display:grid;grid-template-columns:max-content max-content;gap:20px}
+    .approved-benefit{margin:11px 0;padding:10px 12px;background:#f3f8fb;border-left:3px solid #246b9f}
+    .approved-benefit h3{margin:0 0 7px}.approved-benefit-grid{display:grid;grid-template-columns:repeat(3,max-content);gap:15px}
+    button{display:none!important}thead{display:table-header-group}tr{page-break-inside:avoid}
+  `;
+}
+
+function imprimirTablaMovilidadBAC() {
+  const tabla = document.getElementById('tabla').outerHTML;
+const indiceSel = document.getElementById('indice').value;
+const usaRipte = indiceSel === "ripte";
+  const fadVal = document.getElementById('fad').value;
+
+  if (!fadVal) { 
+    alert("Ingresá la FAD antes de imprimir."); 
+    return; 
+  }
+
+  const fad = parseMesMovilidad(fadVal);
+  const limite2021 = new Date("2021-01-01");
+  const limite2024 = new Date("2024-06-01");
+
+let textoIndice = "";
+
+if (indiceSel === "ley") {
+
+  textoIndice = "Aumentos generales de ley.";
+
+} else if (indiceSel === "ripte") {
+
+  if (fad >= limite2024) {
+    textoIndice = "Se aplicó la variación mensual de la RIPTE.";
+  } else if (fad >= limite2021) {
+    textoIndice = "A partir del 03/2021 se aplicó la variación trimestral del IPC. En el 06/2024 se empalmó el índice IPC (51,62%) y RIPTE (16,10%). A partir de ahí, se aplicó la variación de la RIPTE.";
+  } else {
+    textoIndice = "Índice de movilidad: Aumentos generales de ley. Se aplicaron los aumentos suspendidos de la ley 27.426. A partir del 03/2021 se aplicó la variación trimestral del IPC. En el 06/2024 se empalmó el índice IPC (51,62%) y RIPTE (16,10%). A partir de ahí, se aplicó la variación de la RIPTE.";
+  }
+
+} else if (indiceSel === "cier") {
+
+  if (fad >= limite2024) {
+    textoIndice = "Aumentos generales (DNU 274/24).";
+  } else if (fad >= limite2021) {
+    textoIndice = "A partir del 03/2021 se aplicó la variación trimestral del IPC. En el 06/2024 se empalmó el índice IPC (51,62%) y aumento legal (8,83%). A partir de ahí, aumentos generales (DNU 274/24).";
+  } else {
+    textoIndice = "Índice de movilidad: Aumentos generales de ley. Se aplicaron los aumentos suspendidos de la ley 27.426. A partir del 03/2021 se aplicó la variación trimestral del IPC. En el 06/2024 se empalmó el índice IPC (51,62%) y aumento legal (8,83%). A partir de ahí, aumentos generales (DNU 274/24).";
+  }
+
+}
+
+  const win = window.open('', '_blank');
+  win.document.write(`
+    <html>
+      <head>
+        <title>Movilidad del Haber</title>
+        <style>
+          @page { size: A4 landscape; margin: 10mm; }
+          ${estilosImpresionBACNuevos()}
+          h2 { margin: 0 0 5px; text-align: left; }
+          table { margin-left: 0; }
+        </style>
+      </head>
+      <body>
+        <h2>Movilidad del Haber</h2>
+        <h4>${textoIndice}</h4>
+        ${tabla}
+        <script>window.print();<\/script>
+      </body>
+    </html>
+  `);
+  win.document.close();
+}
+
+
+function limpiar() {
+  // Limpia todos los inputs y selects
+  document.querySelectorAll('input[type="number"], input[type="date"], input[type="month"]').forEach(el => el.value = '');
+  document.getElementById('pension').checked = false;
+document.getElementById('indice').value = "ley";
+  document.getElementById('fallecimiento').disabled = true;
+  document.getElementById('porcentaje').disabled = true;
+  document.getElementById('porcentaje').value = '0.7';
+  document.querySelector('input[name="modo"][value="pbupcpap"]').checked = true;
+  toggleModoHaber();
+  document.getElementById('fad').value = '';
+
+  // Oculta y limpia la tabla
+  const tabla = document.getElementById('tabla');
+  tabla.style.display = 'none';
+  tabla.querySelector('thead').innerHTML = '';
+  tabla.querySelector('tbody').innerHTML = '';
+  Object.keys(haberesReajustadosMovilidad).forEach(clave => delete haberesReajustadosMovilidad[clave]);
+  movilidadCalculada = false;
+  actualizarEstadoMovilidad();
+  document.getElementById('salirMovilidad').style.display = 'none';
+}
+
+
+
+
+let periodosNuevos = [];
+let interesNuevoEditado = false;
+
+const HABERES_REFERENCIA_NUEVOS = `
+1994-02|1899.12|150
+1994-04|1961.41|150
+1995-04|1961.41|150
+1995-10|1961.41|150
+1996-04|1961.41|150
+1997-04|1961.41|150
+2003-07|1961.41|220
+2004-01|1961.41|240
+2004-06|1961.41|260
+2004-09|1961.41|308
+2004-12|3100|308
+2005-07|3100|350
+2005-09|3100|390
+2006-06|3441|470
+2007-01|3888.33|530
+2007-04|3888.33|530
+2007-09|4374.37|596.20
+2008-03|4702.45|655
+2008-07|5055.13|690
+2009-03|5646.08|770.66
+2009-09|6060.50|827.23
+2010-03|6558.06|895.15
+2010-09|7666.37|1046.43
+2011-03|8994.95|1227.78
+2011-09|10507.90|1434.29
+2012-03|12359.39|1687.01
+2012-09|13770.83|1879.67
+2013-03|15861.24|2165
+2013-09|18146.84|2476.98
+2014-03|20199.25|2757.13
+2014-09|23675.54|3231.63
+2015-03|27998.69|3821.73
+2015-09|31495.73|4299.06
+2016-03|36330.32|4958.97
+2016-09|41474.69|5661.16
+2017-03|46849.81|6394.85
+2017-09|53090.20|7246.64
+2018-03|56121.65|7660.42
+2018-06|59314.97|8096.30
+2018-09|63277.21|8637.13
+2018-12|68200.18|9309.10
+2019-03|76268.26|10410.37
+2019-06|84459.47|11528.44
+2019-09|94780.42|12937.22
+2019-12|103064.23|14067.93
+2020-03|106934.71|15891.49
+2020-06|113479.11|16864.05
+2020-09|121990.04|18128.85
+2020-12|128089.54|19035.29
+2021-03|138426.37|20571.44
+2021-06|155203.65|23064.70
+2021-09|174433.38|25922.42
+2021-12|195557.26|29061.63
+2022-03|219571.69|32630.40
+2022-06|252507.44|37524.69
+2022-09|291721.85|43352.59
+2022-12|337288.80|50124.26
+2023-03|394762.81|58665.43
+2023-06|477347.19|70938.24
+2023-09|588521.35|87459.76
+2023-12|711345.76|105712.61
+2024-03|904689.54|134445.30
+2024-04|1152574.47|171283.31
+2024-05|1279472.92|190141.60
+2024-06|1392450.38|206931.10
+2024-07|1450654.81|215580.82
+2024-08|1517094.80|225454.42
+2024-09|1578233.72|234540.23
+2024-10|1644046.07|244320.56
+2024-11|1701094.47|252798.48
+2024-12|1746853.91|259598.76
+2025-01|1789302.46|265907.01
+2025-02|1837613.63|273086.50
+2025-03|1878224.89|279121.71
+2025-04|1923302.29|285820.63
+2025-05|1995041.47|296481.74
+2025-06|2050503.62|304723.93
+2025-07|2081261.17|309294.79
+2025-08|2114977.60|314305.37
+2025-09|2155162.17|320277.17
+2025-10|2195679.22|326298.38
+2025-11|2241349.35|333085.39
+2025-12|2293796.92|340879.59
+2026-01|2350453.70|349299.32
+2026-02|2417441.63|359254.35
+2026-03|2487063.95|369600.88
+2026-04|2559188.80|380319.31
+2026-05|2645689.38|393174.10
+2026-06|2713948.17|403317.99`.trim().split('\n').map(f=>{const [p,max,min]=f.split('|');return[p,Number(max),Number(min)]});
+
+function actualizarEstadoMovilidad(){
+  const estado=document.getElementById('estadoMovilidad');
+  const paso=document.getElementById('estadoPasoRetro');
+  const cantidad=Object.keys(haberesReajustadosMovilidad).length;
+  if(cantidad){
+    const claves=Object.keys(haberesReajustadosMovilidad);
+    estado.textContent='Movilidad calculada: '+cantidad+' períodos disponibles.';
+    paso.textContent='Haberes reajustados disponibles desde '+claves[0]+' hasta '+claves[claves.length-1]+'.';
+  }else{
+    estado.textContent='';
+    paso.textContent='Primero debe calcular la movilidad para generar los haberes reajustados.';
+    document.getElementById('resultadoRetroNuevo').innerHTML='';
+  }
+}
+
+function formatearFechaNueva(input){const n=input.value.replace(/\D/g,'').slice(0,8);input.value=n.length<=2?n:n.length<=4?n.slice(0,2)+'/'+n.slice(2):n.slice(0,2)+'/'+n.slice(2,4)+'/'+n.slice(4)}
+function parseFechaNueva(v){const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec((v||'').trim());if(!m)return null;const f=new Date(+m[3],+m[2]-1,+m[1],12);return f.getFullYear()==+m[3]&&f.getMonth()==+m[2]-1&&f.getDate()==+m[1]?f:null}
+function fechaNuevaTexto(f){return String(f.getDate()).padStart(2,'0')+'/'+String(f.getMonth()+1).padStart(2,'0')+'/'+f.getFullYear()}
+function periodoNuevoTexto(f){return String(f.getMonth()+1).padStart(2,'0')+'/'+f.getFullYear()}
+function sincronizarCierreNuevo(i){formatearFechaNueva(i);const x=document.getElementById('interesNuevo');if(!interesNuevoEditado||!x.value)x.value=i.value;Object.keys(haberesReajustadosMovilidad).forEach(k=>delete haberesReajustadosMovilidad[k]);movilidadCalculada=false;document.getElementById('btnCalcularRetroNuevo').style.display='none';document.getElementById('salirMovilidad').style.display='none';actualizarEstadoMovilidad()}
+function editarInteresNuevo(i){formatearFechaNueva(i);interesNuevoEditado=!!i.value}
+function ymdNuevo(f){return f.getFullYear()+'-'+String(f.getMonth()+1).padStart(2,'0')+'-'+String(f.getDate()).padStart(2,'0')}
+function dia30Nuevo(f){const u=new Date(f.getFullYear(),f.getMonth()+1,0).getDate();return f.getDate()===u?30:Math.min(f.getDate(),30)}
+function proporcionPeriodoNuevo(fechaPeriodo,fip,cierre){const ini=fechaPeriodo.getFullYear()===fip.getFullYear()&&fechaPeriodo.getMonth()===fip.getMonth();const fin=fechaPeriodo.getFullYear()===cierre.getFullYear()&&fechaPeriodo.getMonth()===cierre.getMonth();return Math.max((fin?dia30Nuevo(cierre):30)-(ini?dia30Nuevo(fip):1)+1,0)/30}
+function proporcionHACNuevo(inicio,corte){const primer=corte.getMonth()===5?0:6;let suma=0;for(let m=primer;m<=corte.getMonth();m++){const fm=new Date(corte.getFullYear(),m,1,12);if(fm<new Date(inicio.getFullYear(),inicio.getMonth(),1,12))continue;let d=1,h=30;if(inicio.getFullYear()===corte.getFullYear()&&m===inicio.getMonth())d=dia30Nuevo(inicio);if(m===corte.getMonth())h=dia30Nuevo(corte);suma+=Math.max(h-d+1,0)/30}return Math.min(suma/6,1)}
+function parseMontoNuevo(v){let t=String(v??'').trim().replace(/\s|\$/g,'');if(!t)return null;const c=t.lastIndexOf(','),p=t.lastIndexOf('.');if(c>=0&&p>=0)t=c>p?t.replace(/\./g,'').replace(',','.'):t.replace(/,/g,'');else if(c>=0)t=t.replace(',','.');t=t.replace(/[^0-9.\-]/g,'');const n=Number(t);return Number.isFinite(n)?n:null}
+function referenciaNueva(periodo,tipo){const[mes,anio]=periodo.split('/').map(Number),clave=anio*12+mes-1;let vigente=null;for(const f of HABERES_REFERENCIA_NUEVOS){const[a,m]=f[0].split('-').map(Number);if(a*12+m-1>clave)break;vigente=f}return vigente?(tipo==='max'?vigente[1]:vigente[2]):null}
+
+const COEFICIENTES_BADARO_NUEVO=[
+  ['2003-01',1.075889],['2004-01',1.120708],['2005-01',1.093216],
+  ['2006-01',1.203150],['2007-01',1.343509],['2007-09',1.125000],
+  ['2008-03',1.075000],['2008-07',1.075000]
+];
+function toggleMovilizarTopeNuevo(){
+  const activo=document.getElementById('movilizarTopeNuevo').checked;
+  document.getElementById('indiceTopeContainer').style.display=activo?'flex':'none';
+  document.getElementById('resultadoRetroNuevo').innerHTML='';
+}
+function incrementoTopeNuevo(fila,tipo){
+  if(tipo==='cier'&&coefCier[fila.periodo])return coefCier[fila.periodo];
+  if(tipo==='ripte'&&ripteCoef[fila.periodo])return ripteCoef[fila.periodo];
+  return fila.inc;
+}
+function topeMovilizadoNuevo(periodo,tipo){
+  const[mes,anio]=periodo.split('/').map(Number);
+  const objetivo=new Date(anio,mes-1,1,12);
+  if(objetivo<new Date(2002,0,1,12))return null;
+  let tope=3100;
+  COEFICIENTES_BADARO_NUEVO.forEach(([clave,coeficiente])=>{
+    const[a,m]=clave.split('-').map(Number);
+    if(new Date(a,m-1,1,12)<=objetivo)tope*=coeficiente;
+  });
+  for(const fila of datos){
+    const fecha=periodoAFecha(fila.periodo);
+    if(fecha>objetivo)break;
+    tope*=incrementoTopeNuevo(fila,tipo);
+  }
+  return tope;
+}
+
+function abrirMovilidadNueva(){
+  const cierre=parseFechaNueva(document.getElementById('cierreNuevo').value);
+  if(!cierre){alert('Ingrese primero una Fecha de cierre válida.');return}
+  const ultimo=periodoAFecha(datos[datos.length-1].periodo);
+  if(new Date(cierre.getFullYear(),cierre.getMonth(),1,12)>ultimo){alert('Los coeficientes de movilidad disponibles llegan hasta '+periodoNuevoTexto(ultimo)+'.');return}
+  document.getElementById('btnCalcularRetroNuevo').style.display='none';
+  document.getElementById('modalMovilidad').style.display='flex';
+}
+
+function salirYContinuarMovilidad(){
+  if(!movilidadCalculada){alert('Primero debe calcular la movilidad.');return}
+  document.getElementById('modalMovilidad').style.display='none';
+  document.getElementById('btnCalcularRetroNuevo').style.display='inline-block';
+  document.getElementById('estadoPasoRetro').textContent='';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function abrirPercibidosNuevos(){
+  if(!movilidadCalculada){alert('Primero debe calcular la movilidad.');return}
+  const fip=parseFechaNueva(document.getElementById('fipNuevo').value),cierre=parseFechaNueva(document.getElementById('cierreNuevo').value),interes=parseFechaNueva(document.getElementById('interesNuevo').value);
+  if(!fip||!cierre||!interes){alert('Complete las tres fechas en formato DD/MM/AAAA.');return}
+  if(fip>cierre){alert('La FIP no puede ser posterior al cierre.');return}if(interes<cierre){alert('La fecha de interés no puede ser anterior al cierre.');return}
+  periodosNuevos=[];let cur=new Date(fip.getFullYear(),fip.getMonth(),1,12),ult=new Date(cierre.getFullYear(),cierre.getMonth(),1,12);
+  while(cur<=ult){const per=periodoNuevoTexto(cur),reaj=haberesReajustadosMovilidad[per];if(reaj===undefined){alert('No se generó un haber reajustado para '+per+'. Revise el período calculado en Movilidad.');return}const finMes=new Date(cur.getFullYear(),cur.getMonth()+1,0,12);periodosNuevos.push({periodo:per,fechaFin:finMes>cierre?cierre:finMes,reajustado:reaj});cur=new Date(cur.getFullYear(),cur.getMonth()+1,1,12)}
+  let h='<div class="retro-modal-overlay"><div class="retro-modal"><div class="retro-modal-head"><h3>Cargar haberes percibidos</h3><button class="retro-close" onclick="cerrarPercibidosNuevos()">×</button></div><div class="retro-reference-options"><label><input type="checkbox" id="minNuevo" onchange="toggleReferenciaNueva(\'min\')"> Cargar haberes mínimos</label><label><input type="checkbox" id="maxNuevo" onchange="toggleReferenciaNueva(\'max\')"> Cargar haberes máximos</label><label><input type="checkbox" id="aumentosLegalesNuevo"> Aplicar aumentos legales</label></div><p>Puede completar Percibido manualmente o pegar una columna desde Excel. Presione Enter para completar y avanzar al período siguiente. Reajustado proviene del paso 1.</p><div class="retro-modal-table"><table><thead><tr><th>Período</th><th>Percibido</th><th>Reajustado</th></tr></thead><tbody>';
+  periodosNuevos.forEach((p,i)=>{h+='<tr><td>'+p.periodo+'</td><td><input class="percibido-input" data-i="'+i+'" inputmode="decimal" onpaste="pegarPercibidosNuevos(event,'+i+')" onkeydown="avanzarPercibidoNuevo(event,'+i+')"></td><td>'+formatoPesos.format(p.reajustado)+'</td></tr>'});
+  h+='</tbody></table></div><div class="retro-modal-actions"><button id="continuarNuevo" onclick="calcularRetroNuevo()">Cargar y continuar</button><button onclick="cerrarPercibidosNuevos()">Cancelar</button></div></div></div>';const m=document.getElementById('modalPercibidosNuevo');m.innerHTML=h;m.style.display='';document.getElementById('resultadoRetroNuevo').innerHTML='';
+}
+function cerrarPercibidosNuevos(){document.getElementById('modalPercibidosNuevo').style.display='none'}
+function toggleReferenciaNueva(tipo){const min=document.getElementById('minNuevo'),max=document.getElementById('maxNuevo');if(tipo==='min'&&min.checked)max.checked=false;if(tipo==='max'&&max.checked)min.checked=false;const activo=min.checked?'min':max.checked?'max':null;document.querySelectorAll('.percibido-input').forEach((i,n)=>{i.disabled=false;i.value=activo?(referenciaNueva(periodosNuevos[n].periodo,activo)??''):''})}
+function aumentoLegalPeriodoNuevo(periodo){const[mes,anio]=periodo.split('/').map(Number);const fila=datos.find(d=>{const f=periodoAFecha(d.periodo);return f.getFullYear()===anio&&f.getMonth()===mes-1});return fila?fila.inc:1}
+function avanzarPercibidoNuevo(event,indice){if(event.key!=='Enter')return;event.preventDefault();const inputs=[...document.querySelectorAll('.percibido-input')],actual=inputs[indice],siguiente=inputs[indice+1];if(!siguiente)return;const valor=parseMontoNuevo(actual.value);if(valor===null){alert('Ingrese un valor válido antes de continuar.');actual.focus();return}const aplicar=document.getElementById('aumentosLegalesNuevo').checked,coeficiente=aplicar?aumentoLegalPeriodoNuevo(periodosNuevos[indice+1].periodo):1,nuevo=valor*coeficiente;siguiente.value=nuevo.toFixed(2).replace('.',',');siguiente.focus();siguiente.select()}
+function pegarPercibidosNuevos(e,inicio){const filas=e.clipboardData.getData('text').split(/\r?\n/).filter(x=>x.trim());const ins=[...document.querySelectorAll('.percibido-input')];let ok=false;filas.forEach((f,d)=>{const c=f.split('\t');for(let j=c.length-1;j>=0;j--){const n=parseMontoNuevo(c[j]);if(n!==null&&ins[inicio+d]&&!ins[inicio+d].disabled){ins[inicio+d].value=String(n).replace('.',',');ok=true;break}}});if(ok)e.preventDefault()}
+async function indiceNuevo(fecha,id){const r=await fetch('https://api.bcra.gob.ar/estadisticas/v4.0/monetarias/'+id+'?desde='+ymdNuevo(fecha)+'&hasta='+ymdNuevo(fecha));if(!r.ok)throw new Error('Error consultando la API del BCRA.');const d=await r.json(),v=d.results?.[0]?.detalle?.[0]?.valor;if(!Number.isFinite(Number(v))||Number(v)<=0)throw new Error('No hay índice BCRA para '+fechaNuevaTexto(fecha)+'.');return Number(v)}
+function coefNuevo(t0,tm){return(((tm+100)/(t0+100))-1)*100}
+
+async function calcularRetroNuevo(){
+  const fip=parseFechaNueva(document.getElementById('fipNuevo').value);
+  const cierre=parseFechaNueva(document.getElementById('cierreNuevo').value);
+  const interesFecha=parseFechaNueva(document.getElementById('interesNuevo').value);
+  const inputs=[...document.querySelectorAll('.percibido-input')];
+  const percibidos=[];
+  for(let i=0;i<inputs.length;i++){
+    const valor=parseMontoNuevo(inputs[i].value);
+    if(valor===null||valor<0){alert('Ingrese un haber percibido válido para '+periodosNuevos[i].periodo+'.');return}
+    percibidos.push(valor);
+  }
+
+  const id=Number(document.getElementById('tasaNueva').value);
+  const os=Number(document.getElementById('osNuevo').value);
+  const modoTope=document.getElementById('topeNuevo').value;
+  const movilizarTope=document.getElementById('movilizarTopeNuevo').checked;
+  const indiceTope=document.getElementById('indiceTopeNuevo').value;
+  const selectorIndiceTope=document.getElementById('indiceTopeNuevo');
+  const nombreIndiceTope=selectorIndiceTope.options[selectorIndiceTope.selectedIndex].textContent;
+  const nombre=id===1197?'Tasa de Interés Moratorio (BCRA)':'Tasa Pasiva Promedio (BCRA)';
+  const btn=document.getElementById('continuarNuevo');
+  const modal=document.getElementById('modalPercibidosNuevo');
+  const res=document.getElementById('resultadoRetroNuevo');
+  btn.disabled=true;btn.textContent='Calculando...';modal.style.display='none';
+  res.innerHTML='<div class="retro-loading">Consultando índices del BCRA...</div>';
+
+  try{
+    const tm=await indiceNuevo(interesFecha,id);
+    const t0s=await Promise.all(periodosNuevos.map(p=>indiceNuevo(p.fechaFin,id)));
+    const filas=[];
+    let cantidadSupera=0;
+
+    periodosNuevos.forEach((p,i)=>{
+      const topeCompleto=movilizarTope?topeMovilizadoNuevo(p.periodo,indiceTope):referenciaNueva(p.periodo,'max');
+      if(topeCompleto===null)throw new Error('No hay un haber máximo informado para '+p.periodo+'.');
+      const fechaPeriodo=new Date(p.fechaFin.getFullYear(),p.fechaFin.getMonth(),1,12);
+      const proporcion=proporcionPeriodoNuevo(fechaPeriodo,fip,cierre);
+      const percibido=percibidos[i]*proporcion;
+      const reajustado=p.reajustado*proporcion;
+      const tope=topeCompleto*proporcion;
+      const supera=reajustado>tope;
+      const porcentajeTope=supera&&reajustado>0?(reajustado-tope)/reajustado*100:0;
+      let reclamado=reajustado;
+      if(supera){
+        cantidadSupera++;
+        if(modoTope==='aplica')reclamado=tope;
+        else if(modoTope==='condicional')reclamado=porcentajeTope>15?reajustado:tope;
+      }
+
+      const superaCompleto=p.reajustado>topeCompleto;
+      const quitaCompleta=superaCompleto&&p.reajustado>0?(p.reajustado-topeCompleto)/p.reajustado*100:0;
+      let reclamadoCompleto=p.reajustado;
+      if(superaCompleto){
+        if(modoTope==='aplica')reclamadoCompleto=topeCompleto;
+        else if(modoTope==='condicional')reclamadoCompleto=quitaCompleta>15?p.reajustado:topeCompleto;
+      }
+
+      const diferenciaCompleta=Math.max(reclamadoCompleto-percibidos[i],0);
+      const diferenciaBruta=Math.max(reclamado-percibido,0);
+      const esHAC=p.fechaFin.getMonth()===5||p.fechaFin.getMonth()===11;
+      const hac=esHAC?diferenciaCompleta*.5*proporcionHACNuevo(fip,p.fechaFin):0;
+      const subtotal=diferenciaBruta+hac;
+      const obraSocial=subtotal*os/100;
+      const diferenciaNeta=subtotal-obraSocial;
+      const coeficiente=coefNuevo(t0s[i],tm);
+      const interes=diferenciaNeta*coeficiente/100;
+      const total=diferenciaNeta+interes;
+      filas.push({periodo:p.periodo,percibido,reajustado,tope,porcentajeTope,reclamado,diferenciaBruta,hac,subtotal,obraSocial,diferenciaNeta,coeficiente,interes,total});
+    });
+
+    let leyendaTope;
+    if(cantidadSupera===0){
+      leyendaTope='En ningún período el haber reajustado superó el monto del haber máximo vigente.';
+    }else{
+      const alcance=cantidadSupera===filas.length?'todos los períodos':'algunos períodos';
+      if(modoTope==='aplica')leyendaTope='En '+alcance+' el haber reajustado superó el monto del haber máximo vigente y se aplicó el tope.';
+      else if(modoTope==='elimina')leyendaTope='En '+alcance+' el haber reajustado superó el monto del haber máximo vigente y se eliminó el tope.';
+      else leyendaTope='En '+alcance+' el haber reajustado superó el monto del haber máximo vigente y se eliminó el tope sólo en aquellos períodos donde se acreditó una quita confiscatoria.';
+    }
+
+    const detalleTope=movilizarTope
+      ?'<p>El haber máximo se movilizó desde <strong>$ 3.100,00 (01/2002)</strong> aplicando <strong>'+nombreIndiceTope+'</strong>.</p>'
+      :'';
+    const sumas={percibido:0,reajustado:0,tope:0,reclamado:0,diferenciaBruta:0,hac:0,subtotal:0,obraSocial:0,diferenciaNeta:0,interes:0,total:0};
+    let html='<div class="retro-print-nuevo"><div class="retro-report-nuevo"><h3>Informe de nuevos períodos y retroactividades</h3>'+
+      '<p>Se calcularon las diferencias entre <strong>'+fechaNuevaTexto(fip)+'</strong> y <strong>'+fechaNuevaTexto(cierre)+'</strong>.</p>'+
+      '<p>Se aplicaron intereses hasta <strong>'+fechaNuevaTexto(interesFecha)+'</strong> con <strong>'+nombre+'</strong>.</p>'+
+      '<p>Se descontó obra social (INSSJP) al <strong>'+os+' %</strong>.</p>'+detalleTope+'<p>'+leyendaTope+'</p></div>'+ 
+      '<table><thead><tr><th>Período</th><th>Percibido</th><th>Reajustado</th><th>Tope</th><th>% Tope</th><th>Reclamado</th><th>Dif. Bruta</th><th>H.A.C.</th><th>Subtotal</th><th>O.S.</th><th>Dif. Neta</th><th>Coef. Interés</th><th>Interés</th><th>Total</th></tr></thead><tbody>';
+
+    filas.forEach(f=>{
+      Object.keys(sumas).forEach(k=>sumas[k]+=f[k]);
+      html+='<tr><td>'+f.periodo+'</td><td>'+formatoPesos.format(f.percibido)+'</td><td>'+formatoPesos.format(f.reajustado)+'</td><td>'+formatoPesos.format(f.tope)+'</td>'+
+        '<td>'+f.porcentajeTope.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2})+' %</td><td>'+formatoPesos.format(f.reclamado)+'</td>'+
+        '<td>'+formatoPesos.format(f.diferenciaBruta)+'</td><td>'+formatoPesos.format(f.hac)+'</td><td>'+formatoPesos.format(f.subtotal)+'</td><td>'+formatoPesos.format(f.obraSocial)+'</td>'+
+        '<td>'+formatoPesos.format(f.diferenciaNeta)+'</td><td>'+f.coeficiente.toLocaleString('es-AR',{minimumFractionDigits:4,maximumFractionDigits:4})+' %</td><td>'+formatoPesos.format(f.interes)+'</td><td>'+formatoPesos.format(f.total)+'</td></tr>';
+    });
+
+    html+='</tbody><tfoot><tr><th>Totales</th><th>'+formatoPesos.format(sumas.percibido)+'</th><th>'+formatoPesos.format(sumas.reajustado)+'</th><th>'+formatoPesos.format(sumas.tope)+'</th><th></th><th>'+formatoPesos.format(sumas.reclamado)+'</th>'+
+      '<th>'+formatoPesos.format(sumas.diferenciaBruta)+'</th><th>'+formatoPesos.format(sumas.hac)+'</th><th>'+formatoPesos.format(sumas.subtotal)+'</th><th>'+formatoPesos.format(sumas.obraSocial)+'</th><th>'+formatoPesos.format(sumas.diferenciaNeta)+'</th><th></th><th>'+formatoPesos.format(sumas.interes)+'</th><th>'+formatoPesos.format(sumas.total)+'</th></tr></tfoot></table></div><button onclick="imprimirRetroNuevo()">Imprimir liquidación</button>';
+    res.innerHTML=html;
+  }catch(error){
+    console.error(error);res.innerHTML='';modal.style.display='';alert(error.message||'No se pudo calcular.');
+  }finally{
+    btn.disabled=false;btn.textContent='Cargar y continuar';
+  }
+}
+function escaparHTMLNuevo(valor){return String(valor??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fechaISONueva(valor){if(!valor)return '—';const partes=valor.split('-');return partes.length===3?partes[2]+'/'+partes[1]+'/'+partes[0]:valor}
+function textoIndiceMovilidadNuevo(){
+  const indiceSel=document.getElementById('indice').value;
+  const fad=parseMesMovilidad(document.getElementById('fad').value);
+  const limite2021=new Date(2021,0,1,12);
+  const limite2024=new Date(2024,5,1,12);
+  if(indiceSel==='ley')return 'Aumentos generales de ley.';
+  if(indiceSel==='ripte'){
+    if(fad>=limite2024)return 'Se aplicó la variación mensual de la RIPTE.';
+    if(fad>=limite2021)return 'A partir del 03/2021 se aplicó la variación trimestral del IPC. En el 06/2024 se empalmó el índice IPC (51,62%) y RIPTE (16,10%). A partir de ahí, se aplicó la variación de la RIPTE.';
+    return 'Aumentos generales de ley. Se aplicaron los aumentos suspendidos de la ley 27.426. A partir del 03/2021 se aplicó la variación trimestral del IPC. En el 06/2024 se empalmó el índice IPC (51,62%) y RIPTE (16,10%). A partir de ahí, se aplicó la variación de la RIPTE.';
+  }
+  if(fad>=limite2024)return 'Aumentos generales (DNU 274/24).';
+  if(fad>=limite2021)return 'A partir del 03/2021 se aplicó la variación trimestral del IPC. En el 06/2024 se empalmó el índice IPC (51,62%) y aumento legal (8,83%). A partir de ahí, aumentos generales (DNU 274/24).';
+  return 'Aumentos generales de ley. Se aplicaron los aumentos suspendidos de la ley 27.426. A partir del 03/2021 se aplicó la variación trimestral del IPC. En el 06/2024 se empalmó el índice IPC (51,62%) y aumento legal (8,83%). A partir de ahí, aumentos generales (DNU 274/24).';
+}
+function imprimirRetroNuevo(){
+  const retro=document.querySelector('.retro-print-nuevo');
+  const tablaMovilidad=document.getElementById('tabla');
+  if(!retro||!tablaMovilidad||!movilidadCalculada)return;
+  const beneficiario=escaparHTMLNuevo(document.getElementById('beneficiarioNuevo').value.trim()||'—');
+  const beneficio=escaparHTMLNuevo(document.getElementById('beneficioNuevo').value.trim()||'—');
+  const nombreIndice=escaparHTMLNuevo(textoIndiceMovilidadNuevo());
+  const modoHaber=document.querySelector('input[name="modo"]:checked').value;
+  const pbu=Number(document.getElementById('pbu').value)||0;
+  const pc=Number(document.getElementById('pc').value)||0;
+  const pap=Number(document.getElementById('pap').value)||0;
+  const haberAprobadoHTML=modoHaber==='haberunico'
+    ? '<div class="approved-benefit"><h3>Haber reajustado según liquidación aprobada</h3><p><strong>Haber Total:</strong> '+formatoPesos.format(pbu)+'</p></div>'
+    : '<div class="approved-benefit"><h3>Haber reajustado según liquidación aprobada</h3><div class="approved-benefit-grid"><p><strong>PBU:</strong> '+formatoPesos.format(pbu)+'</p><p><strong>PC:</strong> '+formatoPesos.format(pc)+'</p><p><strong>PAP:</strong> '+formatoPesos.format(pap)+'</p></div></div>';
+  const esPension=document.getElementById('pension').checked;
+  let pensionHTML='';
+  if(esPension){
+    const fallecimiento=fechaISONueva(document.getElementById('fallecimiento').value);
+    const porcentaje=document.getElementById('porcentaje');
+    pensionHTML='<p><strong>Fecha de fallecimiento:</strong> '+escaparHTMLNuevo(fallecimiento)+'</p><p><strong>Porcentaje de Pensión:</strong> '+escaparHTMLNuevo(porcentaje.options[porcentaje.selectedIndex].textContent)+'</p>';
+  }
+  const informeMovilidad='<section class="movilidad-print"><h1 class="liquidacion-title">Liquidación ampliatoria</h1><div class="mobility-print-report"><h2>Movilidad del haber reajustado</h2><div class="beneficiary-print-grid"><p class="beneficiary-direct"><strong>'+beneficiario+'</strong></p><p><strong>N° del Beneficio:</strong> '+beneficio+'</p></div>'+haberAprobadoHTML+'<p><strong>Índice de movilidad:</strong> '+nombreIndice+'</p>'+pensionHTML+'</div>'+tablaMovilidad.outerHTML+'</section>';
+  const estilos=estilosImpresionBACNuevos();
+  const w=window.open('','_blank');
+  if(!w){alert('No se pudo abrir la ventana de impresión.');return}
+  w.document.write('<!doctype html><html><head><meta charset="UTF-8"><title>Liquidación ampliatoria</title><style>'+estilos+
+    '@page movilidadPage{size:A4 portrait;margin:10mm}@page retroPage{size:A4 landscape;margin:8mm}.movilidad-print{page:movilidadPage;display:table;width:fit-content;max-width:none}.retro-print-nuevo{page:retroPage;display:table;width:fit-content;max-width:none;break-before:page;page-break-before:always}.liquidacion-title{text-align:left;margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid #102a43}.movilidad-print #tabla,.retro-print-nuevo table{width:auto!important;max-width:none!important;table-layout:auto;margin:16px 0}.movilidad-print th,.movilidad-print td,.retro-print-nuevo th,.retro-print-nuevo td{padding:5px 4px;font-size:9px!important}</style></head><body>'+informeMovilidad+retro.outerHTML+'</body></html>');
+  w.document.close();w.focus();w.print();w.onafterprint=()=>w.close();
+}
+
+</script>
 </body>
 </html>
