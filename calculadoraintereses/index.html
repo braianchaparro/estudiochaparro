@@ -2210,9 +2210,9 @@ function limpiarRetroactivoActual() {
 }
 
 function estilosImpresionBAC() {
-    return '@page{size:A4 landscape;margin:10mm;}' +
-        '*{box-sizing:border-box;}' +
+    return '*{box-sizing:border-box;}' +
         'html,body{background:#fff;margin:0;padding:0;color:#1e2933;font-family:"Segoe UI",Arial,sans-serif;font-size:12px;line-height:1.4;print-color-adjust:exact;-webkit-print-color-adjust:exact;}' +
+        '.print-page{width:100%;}.print-header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 0 14px;padding:0 0 10px;border-bottom:2px solid #102a43;color:#102a43;}.print-header img{display:block;width:92px;height:38px;object-fit:contain;object-position:left center;}.print-header strong{font-family:Georgia,"Times New Roman",serif;font-size:15px;font-weight:600;text-align:right;}.print-content{width:100%;transform-origin:top left;}.print-footer{margin-top:18px;padding-top:8px;border-top:1px solid #cbd5dc;color:#5d6f7c;font-size:9px;text-align:center;}' +
         'table{width:100%;margin-top:18px;border-collapse:collapse;background:#fff;border:1px solid #dfe6eb;font-size:11px;font-variant-numeric:tabular-nums;}' +
         'th,td{padding:8px 9px;text-align:right;border-bottom:1px solid #dfe6eb;}' +
         'th{background:#102a43!important;color:#fff!important;font-size:9.5px;font-weight:700;letter-spacing:.035em;text-align:center;text-transform:uppercase;}' +
@@ -2232,6 +2232,34 @@ function estilosImpresionBAC() {
         'thead{display:table-header-group;}tr{page-break-inside:avoid;}';
 }
 
+function identidadImpresionBAC() {
+    const logo = document.querySelector('.brand-mark img');
+    const src = logo ? logo.src : '';
+    return {
+        encabezado: '<header class="print-header"><img src="' + src + '" alt="BAC"><strong>Sistema de liquidaciones previsionales</strong></header>',
+        pie: '<footer class="print-footer">© 2026 Estudio Chaparro · Todos los derechos reservados</footer>'
+    };
+}
+
+function prepararEImprimirBAC(w, orientacionPreferida) {
+    const contenido = w.document.querySelector('.print-content');
+    const tabla = contenido && contenido.querySelector('table');
+    const columnas = tabla ? tabla.querySelectorAll('thead th').length : 0;
+    const anchoNatural = tabla ? tabla.scrollWidth : (contenido ? contenido.scrollWidth : 0);
+    const orientacion = orientacionPreferida || ((columnas > 7 || anchoNatural > 760) ? 'landscape' : 'portrait');
+    const anchoUtil = orientacion === 'landscape' ? 1046 : 718;
+    const escala = anchoNatural > anchoUtil ? Math.max(0.58, anchoUtil / anchoNatural) : 1;
+    const hoja = w.document.createElement('style');
+    hoja.textContent = '@page{size:A4 ' + orientacion + ';margin:10mm;}' +
+        '.print-content{zoom:' + escala.toFixed(4) + ';}' +
+        '@supports not (zoom:1){.print-content{transform:scale(' + escala.toFixed(4) + ');width:' + (100 / escala).toFixed(2) + '%;}.print-footer{margin-top:' + (18 * escala).toFixed(2) + 'px;}}';
+    w.document.head.appendChild(hoja);
+    const imprimir = () => { w.focus(); w.print(); };
+    if (w.document.fonts && w.document.fonts.ready) w.document.fonts.ready.then(() => setTimeout(imprimir, 80));
+    else setTimeout(imprimir, 80);
+    w.onafterprint = () => w.close();
+}
+
 function imprimirContenidoCalculado(contenidoHTML, titulo, idContenedor) {
     const w = window.open('', '_blank');
     if (!w) {
@@ -2239,14 +2267,13 @@ function imprimirContenidoCalculado(contenidoHTML, titulo, idContenedor) {
         return false;
     }
 
+    const identidad = identidadImpresionBAC();
     w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>' + titulo + '</title>' +
         '<style>' + estilosImpresionBAC() +
         '#' + idContenedor + '{overflow:visible;}' +
-        '</style></head><body><div id="' + idContenedor + '">' + contenidoHTML + '</div></body></html>');
+        '</style></head><body><main class="print-page">' + identidad.encabezado + '<div class="print-content" id="' + idContenedor + '">' + contenidoHTML + '</div>' + identidad.pie + '</main></body></html>');
     w.document.close();
-    w.focus();
-    w.print();
-    w.onafterprint = () => w.close();
+    prepararEImprimirBAC(w);
     return true;
 }
 
@@ -3312,28 +3339,10 @@ document.getElementById('notaMetodo').innerHTML =
 }
 
 function imprimirTabla() {
-    const w = window.open('', '_blank');
-
-    // Clonar elementos originales
-    const contenido = document.getElementById('resultado').cloneNode(true);
-    const detalle = document.getElementById('detalleMora').cloneNode(true);
-    const nota = document.getElementById('notaMetodo').cloneNode(true);
-
-
-    // Escribir estructura básica con la misma identidad visual de las tablas en pantalla
-    w.document.write('<!DOCTYPE html><html><head><meta charset="utf-8"><title>Impresión</title><style>'+
-        estilosImpresionBAC() +
-        '</style></head><body></body></html>');
-
-    // Agregar nodos clonados al body de la nueva ventana
-    w.document.body.appendChild(contenido);
-    w.document.body.appendChild(detalle);
-    w.document.body.appendChild(nota);
-
-    // Llamamos print() inmediatamente en el flujo del click del usuario
-    w.focus();
-    w.print();
-    w.onafterprint = () => w.close();
+    const resultado = document.getElementById('resultado');
+    if (!resultado.querySelector('table')) { alert('Primero debe realizar el cálculo.'); return; }
+    const contenido = resultado.outerHTML + document.getElementById('detalleMora').outerHTML + document.getElementById('notaMetodo').outerHTML;
+    imprimirContenidoCalculado(contenido, 'Cálculo de intereses', 'impresionIntereses');
 }
 
 
@@ -3928,6 +3937,7 @@ function estilosImpresionBACNuevos() {
   return `
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:#fff;color:#1e2933;font-family:"Segoe UI",Arial,sans-serif;font-size:11px;line-height:1.4;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+    .print-page{width:100%}.print-header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 0 14px;padding:0 0 10px;border-bottom:2px solid #102a43;color:#102a43}.print-header img{display:block;width:92px;height:38px;object-fit:contain;object-position:left center}.print-header strong{font-family:Georgia,"Times New Roman",serif;font-size:15px;font-weight:600;text-align:right}.print-content{width:100%;transform-origin:top left}.print-footer{margin-top:18px;padding-top:8px;border-top:1px solid #cbd5dc;color:#5d6f7c;font-size:9px;text-align:center}
     h1,h2,h3{color:#102a43;font-family:Georgia,"Times New Roman",serif}
     h1{font-size:25px}h2{font-size:19px}h3{font-size:15px}
     h4{margin:6px 0 16px;color:#5d6f7c;font-size:11px;font-weight:500;line-height:1.45}
@@ -3990,26 +4000,29 @@ if (indiceSel === "ley") {
 }
 
   const win = window.open('', '_blank');
+  if (!win) { alert('No se pudo abrir la ventana de impresión.'); return; }
+  const identidad = identidadImpresionBAC();
   win.document.write(`
     <html>
       <head>
         <title>Movilidad del Haber</title>
         <style>
-          @page { size: A4 landscape; margin: 10mm; }
           ${estilosImpresionBACNuevos()}
           h2 { margin: 0 0 5px; text-align: left; }
           table { margin-left: 0; }
         </style>
       </head>
-      <body>
-        <h2>Movilidad del Haber</h2>
-        <h4>${textoIndice}</h4>
-        ${tabla}
-        <script>window.print();<\/script>
+      <body><main class="print-page">
+        ${identidad.encabezado}
+        <div class="print-content"><h2>Movilidad del Haber</h2>
+        <h4>${textoIndice}</h4>${tabla}</div>
+        ${identidad.pie}
+      </main>
       </body>
     </html>
   `);
   win.document.close();
+  prepararEImprimirBAC(win);
 }
 
 
@@ -4374,13 +4387,18 @@ function imprimirRetroNuevo(){
     const porcentaje=document.getElementById('porcentaje');
     pensionHTML='<p><strong>Fecha de fallecimiento:</strong> '+escaparHTMLNuevo(fallecimiento)+'</p><p><strong>Porcentaje de Pensión:</strong> '+escaparHTMLNuevo(porcentaje.options[porcentaje.selectedIndex].textContent)+'</p>';
   }
-  const informeMovilidad='<section class="movilidad-print"><h1 class="liquidacion-title">Liquidación ampliatoria</h1><div class="mobility-print-report"><h2>Movilidad del haber reajustado</h2><div class="beneficiary-print-grid"><p class="beneficiary-direct"><strong>'+beneficiario+'</strong></p><p><strong>N° del Beneficio:</strong> '+beneficio+'</p></div>'+haberAprobadoHTML+'<p><strong>Índice de movilidad:</strong> '+nombreIndice+'</p>'+pensionHTML+'</div>'+tablaMovilidad.outerHTML+'</section>';
+  const identidad=identidadImpresionBAC();
+  const informeMovilidad='<section class="movilidad-print">'+identidad.encabezado+'<div class="section-content"><h1 class="liquidacion-title">Liquidación ampliatoria</h1><div class="mobility-print-report"><h2>Movilidad del haber reajustado</h2><div class="beneficiary-print-grid"><p class="beneficiary-direct"><strong>'+beneficiario+'</strong></p><p><strong>N° del Beneficio:</strong> '+beneficio+'</p></div>'+haberAprobadoHTML+'<p><strong>Índice de movilidad:</strong> '+nombreIndice+'</p>'+pensionHTML+'</div>'+tablaMovilidad.outerHTML+'</div>'+identidad.pie+'</section>';
+  const informeRetro='<section class="retro-page">'+identidad.encabezado+'<div class="section-content">'+retro.outerHTML+'</div>'+identidad.pie+'</section>';
   const estilos=estilosImpresionBACNuevos();
   const w=window.open('','_blank');
   if(!w){alert('No se pudo abrir la ventana de impresión.');return}
   w.document.write('<!doctype html><html><head><meta charset="UTF-8"><title>Liquidación ampliatoria</title><style>'+estilos+
-    '@page movilidadPage{size:A4 portrait;margin:10mm}@page retroPage{size:A4 landscape;margin:8mm}.movilidad-print{page:movilidadPage;display:table;width:fit-content;max-width:none}.retro-print-nuevo{page:retroPage;display:table;width:fit-content;max-width:none;break-before:page;page-break-before:always}.liquidacion-title{text-align:left;margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid #102a43}.movilidad-print #tabla,.retro-print-nuevo table{width:auto!important;max-width:none!important;table-layout:auto;margin:16px 0}.movilidad-print th,.movilidad-print td,.retro-print-nuevo th,.retro-print-nuevo td{padding:5px 4px;font-size:9px!important}</style></head><body>'+informeMovilidad+retro.outerHTML+'</body></html>');
-  w.document.close();w.focus();w.print();w.onafterprint=()=>w.close();
+    '@page movilidadPage{size:A4 portrait;margin:10mm}@page retroPage{size:A4 landscape;margin:8mm}.movilidad-print{page:movilidadPage;width:100%}.retro-page{page:retroPage;width:100%;break-before:page;page-break-before:always}.section-content{width:100%;transform-origin:top left}.movilidad-print .section-content{zoom:.92}.retro-page .section-content{zoom:.72}.liquidacion-title{text-align:left;margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid #102a43}.movilidad-print #tabla,.retro-print-nuevo table{width:100%!important;max-width:100%!important;table-layout:auto;margin:16px 0}.movilidad-print th,.movilidad-print td,.retro-print-nuevo th,.retro-print-nuevo td{padding:5px 4px;font-size:9px!important}</style></head><body>'+informeMovilidad+informeRetro+'</body></html>');
+  w.document.close();
+  const imprimir=()=>{w.focus();w.print()};
+  if(w.document.fonts&&w.document.fonts.ready)w.document.fonts.ready.then(()=>setTimeout(imprimir,80));else setTimeout(imprimir,80);
+  w.onafterprint=()=>w.close();
 }
 
 </script>
