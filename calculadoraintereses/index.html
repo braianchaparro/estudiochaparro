@@ -1058,6 +1058,18 @@ width: 100%;
     text-transform: uppercase;
   }
 
+  /* Calculadora de intereses: sólo la descripción compensatoria puede envolver. */
+  #resultado table th:first-child,
+  #resultado table td:first-child {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  #resultado table th:not(:first-child),
+  #resultado table td:not(:first-child) {
+    white-space: nowrap;
+  }
+
   tr:nth-child(even) { background: #f8fafb; }
   tr:hover { background: var(--blue-50); }
 
@@ -2213,12 +2225,14 @@ function limpiarRetroactivoActual() {
 function estilosImpresionBAC() {
     return '*{box-sizing:border-box;}' +
         'html,body{background:#fff;margin:0;padding:0;color:#1e2933;font-family:"Segoe UI",Arial,sans-serif;font-size:15px;line-height:1.5;print-color-adjust:exact;-webkit-print-color-adjust:exact;}' +
-        '.print-page{width:100%;}.print-header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 0 14px;padding:0 0 10px;border-bottom:2px solid #102a43;color:#102a43;}.print-header img{display:block;width:92px;height:38px;object-fit:contain;object-position:left center;}.print-header strong{font-family:Georgia,"Times New Roman",serif;font-size:15px;font-weight:600;text-align:right;}.print-content{width:100%;}.print-footer{position:fixed;left:0;right:0;bottom:-13mm;padding-top:6px;border-top:1px solid #cbd5dc;color:#5d6f7c;font-size:11px;text-align:center;}.print-footer a{color:#24577a;text-decoration:underline;}' +
-        'table{display:table;width:auto;max-width:100%;margin:18px 0;border-collapse:collapse;background:#fff;border:1px solid #dfe6eb;font-size:14px;font-variant-numeric:tabular-nums;table-layout:auto;}' +
-        'th,td{padding:8px 9px;text-align:right;border-bottom:1px solid #dfe6eb;}' +
+        '.print-page{width:100%;}.print-header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 0 14px;padding:0 0 10px;border-bottom:2px solid #102a43;color:#102a43;}.print-header img{display:block;width:92px;height:38px;object-fit:contain;object-position:left center;}.print-header strong{font-family:Georgia,"Times New Roman",serif;font-size:15px;font-weight:600;text-align:right;}.print-content{width:100%;}.print-footer{position:fixed;left:0;right:0;bottom:4mm;padding-top:6px;border-top:1px solid #cbd5dc;color:#5d6f7c;font-size:11px;text-align:center;}.print-footer a{color:#24577a;text-decoration:underline;}' +
+        'table{display:table;width:auto;max-width:100%;margin:22px 0;border-collapse:collapse;background:#fff;border:1px solid #dfe6eb;border-radius:9px;overflow:hidden;box-shadow:0 1px 2px rgba(11,31,51,.05),0 4px 12px rgba(11,31,51,.04);font-size:14px;font-variant-numeric:tabular-nums;table-layout:auto;}' +
+        'th,td{padding:10px 12px;text-align:right;border-bottom:1px solid #dfe6eb;}' +
         'th,td{white-space:normal;overflow-wrap:anywhere;word-break:normal;}' +
         'th{background:#102a43!important;color:#fff!important;font-size:11px;font-weight:700;letter-spacing:.035em;text-align:center;text-transform:uppercase;}' +
         'tr:nth-child(even){background:#f8fafb!important;}' +
+        '#impresionIntereses table th:first-child,#impresionIntereses table td:first-child{white-space:normal;overflow-wrap:anywhere;word-break:normal;}' +
+        '#impresionIntereses table th:not(:first-child),#impresionIntereses table td:not(:first-child){white-space:nowrap;overflow-wrap:normal;word-break:normal;}' +
         '.left{text-align:left;}.right{text-align:right;}.bold{font-weight:700;}' +
         'h2,h3{color:#102a43;font-family:Georgia,"Times New Roman",serif;}' +
         '.retro-report{margin-top:18px;padding:20px;border:1px solid #dfe6eb;border-top:4px solid #102a43;}' +
@@ -3931,11 +3945,11 @@ function estilosImpresionBACNuevos() {
   return `
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:#fff;color:#1e2933;font-family:"Segoe UI",Arial,sans-serif;font-size:15px;line-height:1.5;print-color-adjust:exact;-webkit-print-color-adjust:exact}
-    .print-page{width:100%}.print-header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 0 14px;padding:0 0 10px;border-bottom:2px solid #102a43;color:#102a43}.print-header img{display:block;width:92px;height:38px;object-fit:contain;object-position:left center}.print-header strong{font-family:Georgia,"Times New Roman",serif;font-size:15px;font-weight:600;text-align:right}.print-content{width:100%}.print-footer{position:fixed;left:0;right:0;bottom:-13mm;padding-top:6px;border-top:1px solid #cbd5dc;color:#5d6f7c;font-size:11px;text-align:center}.print-footer a{color:#24577a;text-decoration:underline}
+    .print-page{width:100%}.print-header{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 0 14px;padding:0 0 10px;border-bottom:2px solid #102a43;color:#102a43}.print-header img{display:block;width:92px;height:38px;object-fit:contain;object-position:left center}.print-header strong{font-family:Georgia,"Times New Roman",serif;font-size:15px;font-weight:600;text-align:right}.print-content{width:100%}.print-footer{position:fixed;left:0;right:0;bottom:4mm;padding-top:6px;border-top:1px solid #cbd5dc;color:#5d6f7c;font-size:11px;text-align:center}.print-footer a{color:#24577a;text-decoration:underline}
     h1,h2,h3{color:#102a43;font-family:Georgia,"Times New Roman",serif}
     h1{font-size:23px}h2{font-size:20px}h3{font-size:16px}
     h4{margin:6px 0 16px;color:#5d6f7c;font-size:12px;font-weight:500;line-height:1.45}
-    table{display:table!important;width:auto;max-width:100%;margin:18px 0;border-collapse:collapse;background:#fff;border:1px solid #dfe6eb;font-size:14px;font-variant-numeric:tabular-nums;table-layout:auto}
+    table{display:table!important;width:auto;max-width:100%;margin:22px 0;border-collapse:collapse;background:#fff;border:1px solid #dfe6eb;border-radius:9px;overflow:hidden;box-shadow:0 1px 2px rgba(11,31,51,.05),0 4px 12px rgba(11,31,51,.04);font-size:14px;font-variant-numeric:tabular-nums;table-layout:auto}
     th,td{padding:10px 12px;text-align:right;white-space:normal;overflow-wrap:anywhere;word-break:normal;border-bottom:1px solid #dfe6eb}
     th{background:#102a43!important;color:#fff!important;font-size:11px;font-weight:700;letter-spacing:.03em;text-align:center;text-transform:uppercase}
     tbody tr:nth-child(even){background:#f8fafb!important}tbody tr:nth-child(odd){background:#fff!important}
