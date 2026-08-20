@@ -2249,9 +2249,9 @@ function prepararEImprimirBAC(w) {
     // En configuraciones regionales de Argentina, Chrome conserva A4 por defecto.
     hoja.textContent = '@page{margin:10mm 10mm 18mm;}';
     w.document.head.appendChild(hoja);
-    const imprimir = () => { w.focus(); w.print(); };
-    if (w.document.fonts && w.document.fonts.ready) w.document.fonts.ready.then(() => setTimeout(imprimir, 80));
-    else setTimeout(imprimir, 80);
+    // Igual que en INTERESES.html: imprimir inmediatamente dentro del clic.
+    w.focus();
+    w.print();
     w.onafterprint = () => w.close();
 }
 
@@ -2267,7 +2267,6 @@ function imprimirContenidoCalculado(contenidoHTML, titulo, idContenedor) {
         '<style>' + estilosImpresionBAC() +
         '#' + idContenedor + '{overflow:visible;}' +
         '</style></head><body><main class="print-page">' + identidad.encabezado + '<div class="print-content" id="' + idContenedor + '">' + contenidoHTML + '</div>' + identidad.pie + '</main></body></html>');
-    w.document.close();
     prepararEImprimirBAC(w);
     return true;
 }
@@ -4017,7 +4016,6 @@ if (indiceSel === "ley") {
       </body>
     </html>
   `);
-  win.document.close();
   prepararEImprimirBAC(win);
 }
 
@@ -4391,9 +4389,8 @@ function imprimirRetroNuevo(){
   if(!w){alert('No se pudo abrir la ventana de impresión.');return}
   w.document.write('<!doctype html><html><head><meta charset="UTF-8"><title>Liquidación ampliatoria</title><style>'+estilos+
     '@page{margin:10mm 10mm 18mm}.movilidad-print,.retro-page{width:100%}.retro-page{break-before:page;page-break-before:always}.section-content{width:100%}.liquidacion-title{text-align:left;margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid #102a43}.movilidad-print #tabla,.retro-print-nuevo table{width:auto!important;max-width:100%!important;table-layout:auto;margin:16px 0}.movilidad-print th,.movilidad-print td,.retro-print-nuevo th,.retro-print-nuevo td{white-space:normal!important;overflow-wrap:anywhere;word-break:normal}</style></head><body>'+informeMovilidad+informeRetro+identidad.pie+'</body></html>');
-  w.document.close();
-  const imprimir=()=>{w.focus();w.print()};
-  if(w.document.fonts&&w.document.fonts.ready)w.document.fonts.ready.then(()=>setTimeout(imprimir,80));else setTimeout(imprimir,80);
+  w.focus();
+  w.print();
   w.onafterprint=()=>w.close();
 }
 
