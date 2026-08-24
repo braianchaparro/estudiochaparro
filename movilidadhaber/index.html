@@ -833,19 +833,20 @@ if (indiceSel === "ley") {
         .print-header strong { font-family:Georgia,"Times New Roman",serif; font-size:15px; font-weight:600; text-align:right; }
         h2 { margin:0 0 5px; color:#102a43; font-family:Georgia,"Times New Roman",serif; font-size:29px; font-weight:600; text-align:left; }
         h4 { margin:0 0 18px; color:#465866; font-size:12px; font-weight:500; line-height:1.45; }
-        table { display:table!important; width:auto; max-width:100%; margin:22px 0; border-collapse:collapse; background:#fff; border:1px solid #dfe6eb; border-radius:9px; overflow:hidden; box-shadow:0 1px 2px rgba(11,31,51,.05),0 4px 12px rgba(11,31,51,.04); font-size:14px; font-variant-numeric:tabular-nums; table-layout:auto; }
-        th,td { padding:10px 12px; text-align:right; white-space:nowrap; border-bottom:1px solid #dfe6eb; }
+        main { width:100%; }
+        table { display:table!important; width:fit-content; max-width:100%; margin:22px 0 14px; border-collapse:collapse; background:#fff; border:1px solid #dfe6eb; border-radius:9px; overflow:hidden; box-shadow:0 1px 2px rgba(11,31,51,.05),0 4px 12px rgba(11,31,51,.04); font-size:14px; font-variant-numeric:tabular-nums; table-layout:auto; }
+        th,td { min-width:0; padding:10px 12px; text-align:right; white-space:normal; overflow-wrap:anywhere; word-break:normal; border-bottom:1px solid #dfe6eb; }
         th { background:#102a43!important; color:#fff!important; font-size:11px; font-weight:750; letter-spacing:.035em; text-align:center; text-transform:uppercase; }
         tbody tr:nth-child(even) { background:#f8fafb!important; }
         thead { display:table-header-group; }
         tr { page-break-inside:avoid; }
-        .print-footer { position:fixed; left:0; right:0; bottom:4mm; padding-top:6px; border-top:1px solid #cbd5dc; color:#5d6f7c; font-size:11px; text-align:center; }
+        .print-footer { position:static; clear:both; width:100%; margin-top:18px; padding-top:8px; border-top:1px solid #cbd5dc; color:#5d6f7c; font-size:11px; text-align:center; break-inside:avoid; page-break-inside:avoid; }
         .print-footer a { color:#24577a; text-decoration:underline; }
       </style></head>
       <body>
         <header class="print-header"><img src="${logoSrc}" alt="BAC"><strong>Sistema de liquidaciones previsionales</strong></header>
         <main><h2>Movilidad del Haber</h2><h4>${textoIndice}</h4>${tabla}</main>
-        <footer class="print-footer">© 2026 Estudio Chaparro · Todos los derechos reservados · <a href="https://estudiochaparro.com.ar/calculadoraintereses/">https://estudiochaparro.com.ar/calculadoraintereses/</a></footer>
+        <footer class="print-footer">© 2026 Estudio Chaparro · Todos los derechos reservados · <a href="https://estudiochaparro.com.ar/movilidadhaber/">https://estudiochaparro.com.ar/movilidadhaber/</a></footer>
       </body></html>`);
   win.focus();
   win.print();
@@ -879,7 +880,7 @@ document.getElementById('indice').value = "ley";
     <strong>Sistema de liquidaciones previsionales</strong>
     <span>© 2026 Estudio Chaparro · Todos los derechos reservados</span>
   </div>
-  <a href="https://estudiochaparro.com.ar/calculadoraintereses/">https://estudiochaparro.com.ar/calculadoraintereses/</a>
+  <a href="https://estudiochaparro.com.ar/movilidadhaber/">https://estudiochaparro.com.ar/movilidadhaber/</a>
 </footer>
 </body>
 </html>
